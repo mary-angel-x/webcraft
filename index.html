@@ -3,707 +3,821 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WEBCRAFT UNIVERSE — Курс HTML & CSS для детей</title>
+<title>WEBCRAFT — HTML & CSS для детей</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
+/* ═══════════════════════════════════════════════════════════════
+   ПЕРЕМЕННЫЕ И СБРОС
+═══════════════════════════════════════════════════════════════ */
 :root {
-  --void: #04020f;
-  --panel: #0c0828;
-  --panel2: #100d35;
-  --border: #1e1560;
-  --glow1: #7c3aff;
-  --glow2: #ff2d78;
-  --glow3: #00e5ff;
-  --glow4: #39ff14;
-  --gold: #ffd700;
-  --text: #d0c0ff;
-  --muted: #5a4a8a;
-  --white: #f0ecff;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:'Exo 2',sans-serif;
-  background:var(--void);
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
+  --cosmos:        #020008;
+  --violet:        #8b2fff;
+  --cyan:          #06e6ff;
+  --teal:          #00ffd5;
+  --pink:          #ff2d8a;
+  --aurora:        #a855f7;
+  --gold:          #ffd700;
+  --green:         #39ff14;
+  --white:         #f0ecff;
+  --text:          #cbbfff;
+  --muted:         #6b5fa0;
+  --glass-bg:      rgba(255,255,255,0.04);
+  --glass-border:  rgba(255,255,255,0.09);
 }
 
-/* ── STARS ── */
-.stars{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:
-    radial-gradient(1px 1px at 5% 10%,rgba(255,255,255,.8) 0%,transparent 100%),
-    radial-gradient(1px 1px at 20% 60%,rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1px 1px at 45% 25%,rgba(255,255,255,.7) 0%,transparent 100%),
-    radial-gradient(1px 1px at 65% 80%,rgba(255,255,255,.4) 0%,transparent 100%),
-    radial-gradient(1px 1px at 85% 15%,rgba(255,255,255,.8) 0%,transparent 100%),
-    radial-gradient(1px 1px at 35% 90%,rgba(255,255,255,.3) 0%,transparent 100%),
-    radial-gradient(1px 1px at 90% 50%,rgba(255,255,255,.6) 0%,transparent 100%),
-    radial-gradient(1px 1px at 55% 45%,rgba(255,255,255,.4) 0%,transparent 100%),
-    radial-gradient(1px 1px at 10% 75%,rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1px 1px at 75% 35%,rgba(255,255,255,.6) 0%,transparent 100%),
-    radial-gradient(2px 2px at 15% 50%,rgba(124,58,255,.9) 0%,transparent 100%),
-    radial-gradient(2px 2px at 80% 30%,rgba(0,229,255,.9) 0%,transparent 100%),
-    radial-gradient(2px 2px at 50% 70%,rgba(255,45,120,.7) 0%,transparent 100%),
-    radial-gradient(2px 2px at 30% 20%,rgba(255,215,0,.6) 0%,transparent 100%);
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html  { scroll-behavior: smooth; }
+body  {
+  font-family: 'Exo 2', sans-serif;
+  background: var(--cosmos);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* ── HERO ── */
-.hero{
-  position:relative;z-index:1;
-  min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:2rem;
-  background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(124,58,255,.18) 0%,transparent 70%);
-}
-.hero-badge{
-  display:inline-block;
-  background:linear-gradient(135deg,rgba(124,58,255,.3),rgba(0,229,255,.2));
-  border:1px solid rgba(0,229,255,.4);
-  border-radius:100px;
-  padding:.45rem 1.4rem;
-  font-family:'Orbitron',monospace;
-  font-size:.7rem;letter-spacing:.15em;
-  color:var(--glow3);
-  margin-bottom:2rem;
-  animation:badgePulse 3s ease-in-out infinite;
-}
-@keyframes badgePulse{
-  0%,100%{box-shadow:0 0 10px rgba(0,229,255,.2);}
-  50%{box-shadow:0 0 25px rgba(0,229,255,.5);}
-}
-.hero-title{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(2.8rem,8vw,6rem);
-  font-weight:900;
-  line-height:1.05;
-  margin-bottom:.5rem;
-  background:linear-gradient(135deg,#fff 0%,var(--glow3) 40%,var(--glow1) 80%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 30px rgba(124,58,255,.4));
-}
-.hero-sub{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(1rem,3vw,1.8rem);
-  font-weight:400;
-  color:var(--glow2);
-  letter-spacing:.1em;
-  margin-bottom:1.5rem;
-}
-.hero-desc{
-  max-width:620px;
-  font-size:1.1rem;line-height:1.7;
-  color:var(--text);opacity:.85;
-  margin:0 auto 2.5rem;
-}
-.hero-pills{
-  display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-bottom:3rem;
-}
-.pill{
-  background:rgba(124,58,255,.15);
-  border:1px solid rgba(124,58,255,.35);
-  border-radius:100px;padding:.4rem 1.1rem;
-  font-size:.85rem;color:var(--glow3);
-  display:flex;align-items:center;gap:.4rem;
-}
-.hero-cta{
-  display:inline-flex;align-items:center;gap:.7rem;
-  background:linear-gradient(135deg,var(--glow1),var(--glow2));
-  border:none;border-radius:100px;
-  padding:1rem 2.4rem;
-  font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;letter-spacing:.05em;
-  color:#fff;cursor:pointer;text-decoration:none;
-  box-shadow:0 0 30px rgba(124,58,255,.5);
-  transition:transform .2s,box-shadow .2s;
-}
-.hero-cta:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 50px rgba(124,58,255,.7);}
 
-/* ── SCROLL ARROW ── */
-.scroll-hint{
-  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:.4rem;
-  color:var(--muted);font-size:.75rem;letter-spacing:.1em;
-  animation:bounce 2s ease-in-out infinite;
-}
-.scroll-hint svg{opacity:.5;}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
-
-/* ── STATS BAR ── */
-.stats-bar{
-  position:relative;z-index:1;
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:1px;background:var(--border);
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-}
-.stat-item{
-  background:var(--panel);
-  padding:1.8rem 1.5rem;text-align:center;
-}
-.stat-num{
-  font-family:'Orbitron',monospace;
-  font-size:2.2rem;font-weight:900;
-  background:linear-gradient(135deg,var(--glow3),var(--glow1));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.stat-label{font-size:.8rem;color:var(--muted);margin-top:.3rem;letter-spacing:.08em;}
-
-/* ── SECTION ── */
-.section{position:relative;z-index:1;padding:5rem 1.5rem;}
-.section-inner{max-width:1100px;margin:0 auto;}
-.section-tag{
-  display:inline-block;
-  font-family:'Fira Code',monospace;font-size:.75rem;
-  color:var(--glow2);letter-spacing:.15em;
-  margin-bottom:.8rem;
-}
-.section-title{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(1.6rem,4vw,2.5rem);font-weight:900;
-  color:var(--white);margin-bottom:.6rem;
-}
-.section-desc{
-  font-size:1rem;line-height:1.7;color:var(--text);opacity:.75;
-  max-width:600px;margin-bottom:3rem;
+/* ═══════════════════════════════════════════════════════════════
+   КОСМИЧЕСКИЙ ФОН — градиенты + туманности
+═══════════════════════════════════════════════════════════════ */
+.space-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 80% at 20% -10%, rgba(75,0,130,.5)   0%, transparent 60%),
+    radial-gradient(ellipse  80% 60% at 80%  10%, rgba(6,230,255,.15) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 70% at 60%  90%, rgba(255,45,138,.18)0%, transparent 55%),
+    radial-gradient(ellipse  90% 80% at  5%  70%, rgba(168,85,247,.18)0%, transparent 60%),
+    linear-gradient(180deg, #020008 0%, #06001a 35%, #0a0025 65%, #020008 100%);
 }
 
-/* ── MODULE TABS ── */
-.tabs{
-  display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem;
+/* Canvas для статичных звёзд (sparkle-эффект) */
+#starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+/* Туманности — медленно дрейфуют */
+.nebula {
+  position: fixed; border-radius: 50%;
+  pointer-events: none; z-index: 0;
+  filter: blur(90px); opacity: .15;
+  animation: nebulaDrift 30s ease-in-out infinite alternate;
 }
-.tab-btn{
-  background:rgba(30,21,96,.6);
-  border:1px solid var(--border);border-radius:100px;
-  padding:.55rem 1.3rem;
-  font-family:'Exo 2',sans-serif;font-size:.85rem;font-weight:600;
-  color:var(--muted);cursor:pointer;transition:all .2s;
-}
-.tab-btn:hover{border-color:var(--glow1);color:var(--glow3);}
-.tab-btn.active{
-  background:linear-gradient(135deg,rgba(124,58,255,.3),rgba(0,229,255,.2));
-  border-color:var(--glow3);color:var(--white);
-  box-shadow:0 0 15px rgba(0,229,255,.2);
+.nebula-1 { width: 600px; height: 400px; top: -100px; left: -100px; background: radial-gradient(var(--violet), transparent 70%); animation-duration: 35s; }
+.nebula-2 { width: 500px; height: 350px; top:  200px; right: -150px; background: radial-gradient(var(--cyan),   transparent 70%); animation-duration: 28s; animation-delay: -10s; }
+.nebula-3 { width: 700px; height: 450px; bottom: 0;   left: 30%;    background: radial-gradient(var(--pink),   transparent 70%); animation-duration: 40s; animation-delay:  -5s; }
+
+@keyframes nebulaDrift {
+  0%   { transform: translate(0,    0)    scale(1);    }
+  50%  { transform: translate(25px,-18px) scale(1.07); }
+  100% { transform: translate(-18px,12px) scale(.94);  }
 }
 
-/* ── MODULE PANEL ── */
-.module-panel{display:none;}
-.module-panel.active{display:block;animation:fadeIn .35s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.module-header{
-  display:flex;align-items:center;gap:1rem;
-  margin-bottom:2rem;
-  padding:1.5rem 2rem;
-  background:linear-gradient(135deg,rgba(124,58,255,.12),rgba(0,229,255,.06));
-  border:1px solid rgba(124,58,255,.25);border-radius:16px;
-}
-.module-icon{font-size:2.5rem;}
-.module-header-info h3{
-  font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;
-  color:var(--white);margin-bottom:.25rem;
-}
-.module-header-info p{font-size:.9rem;color:var(--text);opacity:.7;}
-.module-meta{
-  margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;
-}
-.module-weeks{
-  font-family:'Fira Code',monospace;font-size:.75rem;color:var(--glow3);
-  background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.2);
-  border-radius:100px;padding:.25rem .75rem;
+
+/* ═══════════════════════════════════════════════════════════════
+   ВТОРОЙ CANVAS — падающие звёзды (рисуются через JS)
+═══════════════════════════════════════════════════════════════ */
+#fallingStars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   НАВИГАЦИЯ
+═══════════════════════════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .85rem 2.5rem;
+  background: rgba(2,0,8,.55);
+  border-bottom: 1px solid rgba(139,47,255,.15);
+  backdrop-filter: blur(22px) saturate(160%);
 }
 
-/* ── LESSON CARD ── */
-.lessons-grid{display:grid;gap:1.2rem;}
-.lesson-card{
-  background:var(--panel);
-  border:1px solid var(--border);border-radius:14px;
-  padding:1.5rem;
-  transition:border-color .2s,transform .2s;
-  cursor:default;
-}
-.lesson-card:hover{border-color:rgba(124,58,255,.5);transform:translateX(4px);}
-.lesson-top{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem;}
-.lesson-num{
-  flex-shrink:0;
-  width:38px;height:38px;
-  background:linear-gradient(135deg,var(--glow1),var(--glow2));
-  border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;color:#fff;
-}
-.lesson-title{
-  font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.2rem;
-}
-.lesson-what{font-size:.85rem;color:var(--text);opacity:.7;line-height:1.5;}
-
-/* PROJECTS SECTION */
-.projects-toggle{
-  display:flex;align-items:center;gap:.5rem;
-  margin-top:1rem;
-  font-family:'Fira Code',monospace;font-size:.75rem;
-  color:var(--glow4);cursor:pointer;opacity:.8;
-  transition:opacity .2s;user-select:none;
-}
-.projects-toggle:hover{opacity:1;}
-.projects-toggle .arrow{transition:transform .2s;display:inline-block;}
-.projects-list{display:none;margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border);}
-.projects-list.open{display:block;animation:fadeIn .2s ease;}
-.project-item{
-  display:flex;align-items:flex-start;gap:.75rem;
-  padding:.7rem .9rem;border-radius:10px;margin-bottom:.5rem;
-}
-.project-item:last-child{margin-bottom:0;}
-.proj-easy{background:rgba(57,255,20,.07);border:1px solid rgba(57,255,20,.2);}
-.proj-medium{background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.2);}
-.proj-hard{background:rgba(255,45,120,.07);border:1px solid rgba(255,45,120,.2);}
-.proj-badge{
-  flex-shrink:0;
-  font-size:.6rem;font-weight:700;letter-spacing:.08em;
-  padding:.2rem .6rem;border-radius:100px;margin-top:.15rem;
-}
-.proj-easy .proj-badge{background:rgba(57,255,20,.2);color:var(--glow4);}
-.proj-medium .proj-badge{background:rgba(255,215,0,.2);color:var(--gold);}
-.proj-hard .proj-badge{background:rgba(255,45,120,.2);color:var(--glow2);}
-.proj-text{font-size:.85rem;color:var(--text);opacity:.85;line-height:1.4;}
-
-/* ── FOR WHOM ── */
-.audience-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;
-}
-.audience-card{
-  background:var(--panel);border:1px solid var(--border);border-radius:16px;
-  padding:1.8rem;
-  transition:border-color .2s,box-shadow .2s;
-}
-.audience-card:hover{
-  border-color:rgba(0,229,255,.4);
-  box-shadow:0 0 25px rgba(0,229,255,.08);
-}
-.aud-icon{font-size:2.2rem;margin-bottom:1rem;}
-.aud-title{font-family:'Orbitron',monospace;font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.6rem;}
-.aud-desc{font-size:.88rem;line-height:1.6;color:var(--text);opacity:.75;}
-
-/* ── RESULTS ── */
-.results-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;
-}
-.result-card{
-  background:linear-gradient(135deg,rgba(124,58,255,.08),rgba(0,229,255,.04));
-  border:1px solid rgba(124,58,255,.2);border-radius:14px;
-  padding:1.5rem;
-  display:flex;gap:1rem;align-items:flex-start;
-}
-.result-icon{font-size:1.8rem;flex-shrink:0;}
-.result-text{font-size:.9rem;line-height:1.55;color:var(--text);opacity:.85;}
-.result-text strong{color:var(--white);}
-
-/* ── TIMELINE ── */
-.timeline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:2.5rem;}
-.timeline::before{
-  content:'';position:absolute;left:.75rem;top:0;bottom:0;
-  width:2px;background:linear-gradient(to bottom,var(--glow1),var(--glow3),var(--glow2));
-  border-radius:2px;
-}
-.tl-item{position:relative;padding:0 0 2rem 2rem;}
-.tl-dot{
-  position:absolute;left:-1.75rem;top:.25rem;
-  width:14px;height:14px;border-radius:50%;
-  background:var(--glow1);border:2px solid var(--void);
-  box-shadow:0 0 10px rgba(124,58,255,.6);
-}
-.tl-month{
-  font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;
-  color:var(--glow3);letter-spacing:.12em;margin-bottom:.4rem;
-}
-.tl-title{font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.3rem;}
-.tl-desc{font-size:.85rem;color:var(--text);opacity:.7;line-height:1.5;}
-
-/* ── FAQ ── */
-.faq-list{display:flex;flex-direction:column;gap:.8rem;}
-.faq-item{
-  background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;
-}
-.faq-q{
-  padding:1.1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;
-  cursor:pointer;font-weight:600;font-size:.95rem;color:var(--white);
-  transition:background .2s;
-}
-.faq-q:hover{background:rgba(124,58,255,.08);}
-.faq-q .faq-arrow{font-size:1.1rem;color:var(--glow1);transition:transform .3s;}
-.faq-a{
-  max-height:0;overflow:hidden;
-  font-size:.88rem;line-height:1.65;color:var(--text);opacity:.8;
-  transition:max-height .35s ease,padding .35s ease;
-  padding:0 1.4rem;
-}
-.faq-item.open .faq-a{max-height:300px;padding:0 1.4rem 1.2rem;}
-.faq-item.open .faq-arrow{transform:rotate(180deg);}
-
-/* ── CTA FINAL ── */
-.cta-section{
-  position:relative;z-index:1;
-  padding:5rem 1.5rem;text-align:center;
-  background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(124,58,255,.12) 0%,transparent 70%);
-  border-top:1px solid var(--border);
-}
-.cta-title{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(1.8rem,5vw,3rem);font-weight:900;
-  color:var(--white);margin-bottom:1rem;
-}
-.cta-title span{
-  background:linear-gradient(135deg,var(--glow3),var(--glow1));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.cta-desc{font-size:1rem;line-height:1.7;opacity:.75;max-width:500px;margin:0 auto 2.5rem;}
-.cta-buttons{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:.6rem;
-  background:linear-gradient(135deg,var(--glow1),var(--glow2));
-  border:none;border-radius:100px;padding:1rem 2.2rem;
-  font-family:'Orbitron',monospace;font-size:.95rem;font-weight:700;
-  color:#fff;cursor:pointer;text-decoration:none;
-  box-shadow:0 0 30px rgba(124,58,255,.4);transition:transform .2s,box-shadow .2s;
-}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 50px rgba(124,58,255,.6);}
-.btn-secondary{
-  display:inline-flex;align-items:center;gap:.6rem;
-  background:transparent;
-  border:1.5px solid rgba(0,229,255,.4);border-radius:100px;padding:1rem 2.2rem;
-  font-family:'Orbitron',monospace;font-size:.95rem;font-weight:700;
-  color:var(--glow3);cursor:pointer;text-decoration:none;
-  transition:border-color .2s,box-shadow .2s;
-}
-.btn-secondary:hover{border-color:var(--glow3);box-shadow:0 0 20px rgba(0,229,255,.2);}
-
-/* ── FOOTER ── */
-footer{
-  position:relative;z-index:1;
-  padding:2rem 1.5rem;text-align:center;
-  border-top:1px solid var(--border);
-  font-size:.8rem;color:var(--muted);letter-spacing:.05em;
-}
-footer span{color:var(--glow1);}
-
-/* ── GLOW DIVIDER ── */
-.glow-divider{
-  height:1px;
-  background:linear-gradient(to right,transparent,var(--glow1),var(--glow3),transparent);
-  margin:0;opacity:.3;
+.nav-logo {
+  font-family: 'Orbitron', monospace; font-size: .92rem; font-weight: 900;
+  letter-spacing: .05em;
+  background: linear-gradient(90deg, var(--cyan), var(--violet), var(--pink));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:.9rem 2rem;
-  background:rgba(4,2,15,.85);
-  border-bottom:1px solid rgba(30,21,96,.6);
-  backdrop-filter:blur(12px);
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+  font-size: .75rem; color: var(--muted); text-decoration: none;
+  letter-spacing: .1em; text-transform: uppercase; transition: color .2s;
 }
-.nav-logo{
-  font-family:'Orbitron',monospace;font-size:.95rem;font-weight:900;
-  background:linear-gradient(135deg,var(--glow3),var(--glow1));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.nav-links{display:flex;gap:1.5rem;}
-.nav-links a{
-  font-size:.8rem;color:var(--muted);text-decoration:none;
-  letter-spacing:.08em;transition:color .2s;
-}
-.nav-links a:hover{color:var(--glow3);}
-@media(max-width:600px){.nav-links{display:none;}}
+.nav-links a:hover { color: var(--cyan); }
 
-/* floating particles */
-.particle{
-  position:fixed;border-radius:50%;pointer-events:none;z-index:0;
-  animation:float linear infinite;
+.nav-cta {
+  font-family: 'Orbitron', monospace; font-size: .68rem; font-weight: 700;
+  background: rgba(139,47,255,.1); border: 1px solid rgba(139,47,255,.4);
+  border-radius: 100px; padding: .48rem 1.3rem;
+  color: var(--white); cursor: pointer; text-decoration: none;
+  backdrop-filter: blur(12px);
+  transition: background .2s, border-color .2s;
 }
-@keyframes float{
-  0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
-  10%{opacity:.6;}
-  90%{opacity:.3;}
-  100%{transform:translateY(-10vh) rotate(720deg);opacity:0;}
+.nav-cta:hover { background: rgba(139,47,255,.2); border-color: rgba(139,47,255,.7); }
+
+@media (max-width: 680px) { .nav-links { display: none; } }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════════ */
+.hero {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 2rem 1.5rem; padding-top: 80px;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-family: 'Fira Code', monospace; font-size: .7rem;
+  color: var(--muted); letter-spacing: .18em; text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+.eyebrow-line { width: 28px; height: 1px; background: var(--muted); opacity: .5; }
+
+.hero-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(2.6rem, 8vw, 6.5rem); font-weight: 900; line-height: 1;
+  margin-bottom: .5rem;
+  background: linear-gradient(135deg, #fff 0%, var(--cyan) 20%, var(--aurora) 50%, var(--pink) 75%, #fff 100%);
+  background-size: 400% 400%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: gradShift 7s ease-in-out infinite, titleFlicker 12s ease-in-out infinite;
+}
+
+@keyframes gradShift {
+  0%, 100% { background-position:   0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+@keyframes titleFlicker {
+  0%,  100% { filter: drop-shadow(0 0 30px rgba(139,47,255,.4)); }
+  17%        { filter: drop-shadow(0 0 60px rgba(6,230,255,.8))   drop-shadow(0 0 100px rgba(139,47,255,.5)); }
+  19%        { filter: drop-shadow(0 0 10px rgba(139,47,255,.15)); }
+  21%        { filter: drop-shadow(0 0 70px rgba(255,45,138,.7))  drop-shadow(0 0 110px rgba(139,47,255,.5)); }
+  23%        { filter: drop-shadow(0 0 30px rgba(139,47,255,.4)); }
+  68%        { filter: drop-shadow(0 0 55px rgba(168,85,247,.7)); }
+  70%        { filter: drop-shadow(0 0 8px  rgba(139,47,255,.1)); }
+  72%        { filter: drop-shadow(0 0 60px rgba(6,230,255,.6)); }
+  74%        { filter: drop-shadow(0 0 30px rgba(139,47,255,.4)); }
+}
+
+.hero-sub {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(.8rem, 2vw, 1.1rem); font-weight: 400;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 2rem;
+  animation: subBreath 4s ease-in-out infinite;
+}
+@keyframes subBreath {
+  0%, 100% { opacity: .65; text-shadow: none; }
+  50%       { opacity:   1; text-shadow: 0 0 20px rgba(0,255,213,.55), 0 0 40px rgba(0,255,213,.2); }
+}
+
+.hero-desc {
+  max-width: 660px;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text);
+  opacity: .72;
+  margin: 0 auto 2.5rem;
+}
+
+.hero-pills {
+  display: flex; flex-wrap: wrap; gap: .55rem; justify-content: center;
+  margin-bottom: 2.8rem;
+}
+.pill {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 100px; padding: .4rem 1rem;
+  font-size: .78rem; color: var(--text); opacity: .85;
+  backdrop-filter: blur(8px);
+}
+
+.hero-btn {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: rgba(139,47,255,.1); border: 1.5px solid rgba(139,47,255,.45);
+  border-radius: 100px; padding: 1rem 2.4rem;
+  font-family: 'Orbitron', monospace; font-size: .85rem; font-weight: 700; letter-spacing: .06em;
+  color: var(--white); cursor: pointer; text-decoration: none;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 28px rgba(139,47,255,.2), inset 0 1px 0 rgba(255,255,255,.1);
+  transition: background .25s, border-color .25s, box-shadow .25s, transform .25s;
+  position: relative; overflow: hidden;
+  animation: btnPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 0 22px rgba(139,47,255,.2), inset 0 1px 0 rgba(255,255,255,.1); }
+  50%       { box-shadow: 0 0 45px rgba(139,47,255,.45), 0 0 80px rgba(139,47,255,.12), inset 0 1px 0 rgba(255,255,255,.15); }
+}
+
+/* Блик поверх кнопки */
+.hero-btn::after {
+  content: '';
+  position: absolute; top: 0; left: -120%;
+  width: 55%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.13), transparent);
+  animation: shimmerBtn 4.5s ease-in-out infinite;
+}
+@keyframes shimmerBtn {
+  0%,  55% { left: -120%; }
+  80%, 100% { left:  160%; }
+}
+
+.hero-btn:hover {
+  background: rgba(139,47,255,.22);
+  border-color: rgba(139,47,255,.78);
+  box-shadow: 0 0 55px rgba(139,47,255,.45), inset 0 1px 0 rgba(255,255,255,.18);
+  transform: translateY(-3px);
+  animation: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ОБЩИЕ ЭЛЕМЕНТЫ РАЗДЕЛОВ
+═══════════════════════════════════════════════════════════════ */
+.glow-divider {
+  height: 1px; position: relative; z-index: 1;
+  background: linear-gradient(90deg, transparent, rgba(139,47,255,.4), rgba(6,230,255,.3), transparent);
+}
+
+.section { position: relative; z-index: 1; padding: 5.5rem 1.5rem; }
+.section-inner { max-width: 1060px; margin: 0 auto; }
+
+.section-tag {
+  display: inline-block;
+  font-family: 'Fira Code', monospace; font-size: .68rem;
+  letter-spacing: .2em; text-transform: uppercase;
+  margin-bottom: .7rem; color: var(--muted);
+  animation: tagGlimmer 7s ease-in-out infinite;
+}
+@keyframes tagGlimmer {
+  0%, 100% { color: var(--muted); text-shadow: none; }
+  50%       { color: var(--cyan);  text-shadow: 0 0 14px rgba(6,230,255,.5); }
+}
+
+.section-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem); font-weight: 900;
+  color: var(--white); margin-bottom: .6rem;
+}
+
+.section-desc {
+  font-size: .95rem; line-height: 1.8;
+  color: var(--text); opacity: .65; max-width: 520px; margin-bottom: 2.5rem;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   О КУРСЕ — полоска с аватаром
+═══════════════════════════════════════════════════════════════ */
+.about-strip {
+  display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap;
+  padding: 2rem 2.5rem;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 20px; backdrop-filter: blur(16px);
+}
+
+.about-avatar {
+  width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(139,47,255,.25), rgba(6,230,255,.15));
+  border: 1px solid rgba(139,47,255,.35);
+  display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+  box-shadow: 0 0 20px rgba(139,47,255,.2);
+}
+
+.about-text { flex: 1; min-width: 200px; }
+.about-text p { font-size: .9rem; line-height: 1.75; color: var(--text); opacity: .78; }
+
+.about-perks { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.about-perk {
+  font-family: 'Fira Code', monospace; font-size: .7rem;
+  color: var(--cyan); opacity: .8;
+  background: rgba(6,230,255,.06); border: 1px solid rgba(6,230,255,.15);
+  border-radius: 100px; padding: .25rem .75rem;
+  animation: perkGlow 5s ease-in-out infinite;
+}
+.about-perk:nth-child(2) { animation-delay: 1.2s; }
+.about-perk:nth-child(3) { animation-delay: 2.4s; }
+.about-perk:nth-child(4) { animation-delay: 3.6s; }
+
+@keyframes perkGlow {
+  0%, 100% { border-color: rgba(6,230,255,.15); box-shadow: none; opacity: .8; }
+  50%       { border-color: rgba(6,230,255,.45); box-shadow: 0 0 12px rgba(6,230,255,.2); opacity: 1; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ПРОГРАММА — табы и уроки
+═══════════════════════════════════════════════════════════════ */
+.tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+
+.tab-btn {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 100px; padding: .55rem 1.3rem;
+  font-family: 'Exo 2', sans-serif; font-size: .83rem; font-weight: 600;
+  color: var(--muted); cursor: pointer; backdrop-filter: blur(8px); transition: all .2s;
+}
+.tab-btn:hover { border-color: rgba(139,47,255,.4); color: var(--white); }
+.tab-btn.active {
+  background: rgba(139,47,255,.15); border-color: rgba(139,47,255,.5);
+  color: var(--white); box-shadow: 0 0 16px rgba(139,47,255,.15);
+}
+
+/* Панели модулей */
+.module-panel { display: none; }
+.module-panel.active { display: block; animation: fadeUp .3s ease; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.module-header {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem; padding: 1.2rem 1.6rem;
+  background: linear-gradient(135deg, rgba(139,47,255,.08), rgba(6,230,255,.04));
+  border: 1px solid rgba(139,47,255,.18); border-radius: 16px;
+  backdrop-filter: blur(14px);
+}
+.module-icon { font-size: 2rem; }
+.module-header-info h3 {
+  font-family: 'Orbitron', monospace; font-size: .95rem; font-weight: 700;
+  color: var(--white); margin-bottom: .2rem;
+}
+.module-header-info p { font-size: .82rem; color: var(--text); opacity: .6; }
+.module-meta { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: .3rem; }
+.module-tag {
+  font-family: 'Fira Code', monospace; font-size: .68rem; color: var(--cyan);
+  background: rgba(6,230,255,.07); border: 1px solid rgba(6,230,255,.18);
+  border-radius: 100px; padding: .2rem .7rem;
+}
+
+/* Карточки уроков */
+.lessons-grid { display: grid; gap: .85rem; }
+
+.lesson-card {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 14px; padding: 1.4rem 1.5rem;
+  backdrop-filter: blur(14px);
+  transition: border-color .2s, transform .2s;
+}
+.lesson-card:hover { border-color: rgba(139,47,255,.3); transform: translateX(4px); }
+
+.lesson-top { display: flex; align-items: flex-start; gap: .9rem; margin-bottom: .8rem; }
+
+.lesson-num {
+  flex-shrink: 0; width: 36px; height: 36px;
+  background: rgba(139,47,255,.18); border: 1px solid rgba(139,47,255,.3);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', monospace; font-size: .68rem; font-weight: 700; color: var(--aurora);
+}
+.lesson-title { font-size: .95rem; font-weight: 700; color: var(--white); margin-bottom: .2rem; }
+.lesson-what  { font-size: .82rem; color: var(--text); opacity: .62; line-height: 1.55; }
+
+/* Проекты внутри урока */
+.projects-toggle {
+  display: inline-flex; align-items: center; gap: .4rem; margin-top: .7rem;
+  font-family: 'Fira Code', monospace; font-size: .68rem;
+  color: var(--green); cursor: pointer; opacity: .7;
+  transition: opacity .2s; user-select: none;
+}
+.projects-toggle:hover { opacity: 1; }
+.projects-toggle .arr { display: inline-block; transition: transform .2s; }
+
+.projects-list {
+  display: none;
+  margin-top: .8rem;
+  padding-top: .8rem;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.projects-list.open {
+  display: block;
+  animation: fadeUp .2s ease; }
+
+.project-item {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  padding: .6rem .85rem;
+  border-radius: 10px;
+  margin-bottom: .4rem;
+}
+.project-item:last-child { margin-bottom: 0; }
+
+.proj-easy   {
+  background: rgba(57,255,20,.05);
+  border: 1px solid rgba(57,255,20,.15); }
+
+.proj-medium {
+  background: rgba(255,215,0,.05);
+  border: 1px solid rgba(255,215,0,.15); }
+
+.proj-hard   {
+  background: rgba(255,45,138,.05);
+  border: 1px solid rgba(255,45,138,.15); }
+
+.proj-badge {
+  flex-shrink: 0; font-size: .56rem; font-weight: 700; letter-spacing: .08em;
+  padding: .18rem .55rem; border-radius: 100px; margin-top: .2rem;
+}
+.proj-easy   .proj-badge { background: rgba(57,255,20,.15);  color: var(--green); }
+.proj-medium .proj-badge { background: rgba(255,215,0,.15);  color: var(--gold); }
+.proj-hard   .proj-badge { background: rgba(255,45,138,.15); color: var(--pink); }
+
+.proj-text {
+  font-size: .82rem;
+  color: var(--text);
+  opacity: .78;
+  line-height: 1.45; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   РЕЗУЛЬТАТЫ КУРСА
+═══════════════════════════════════════════════════════════════ */
+.gets-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .85rem;
+}
+
+.get-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  gap: .85rem;
+  align-items: flex-start;
+  backdrop-filter: blur(12px);
+  transition: border-color .2s;
+}
+.get-card:hover {
+  border-color: rgba(139,47,255,.28); }
+.get-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: .1rem; }
+.get-text {
+  font-size: .85rem;
+  line-height: 1.55;
+  color: var(--text);
+  opacity: .8; }
+.get-text strong {
+  color: var(--white);
+  display: block;
+  margin-bottom: .1rem;
+  font-size: .87rem; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FAQ
+═══════════════════════════════════════════════════════════════ */
+.faq-list { display: flex; flex-direction: column; gap: .6rem; }
+
+.faq-item {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 12px; overflow: hidden; backdrop-filter: blur(12px);
+  transition: border-color .2s;
+}
+.faq-item:hover { border-color: rgba(139,47,255,.25); }
+
+.faq-q {
+  padding: 1rem 1.3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; font-size: .9rem; font-weight: 600; color: var(--white);
+  transition: background .2s;
+}
+.faq-q:hover { background: rgba(139,47,255,.05); }
+.faq-q .faq-arrow { font-size: 1rem; color: var(--muted); transition: transform .3s; }
+
+.faq-a {
+  max-height: 0; overflow: hidden;
+  font-size: .84rem; line-height: 1.72; color: var(--text); opacity: .75;
+  transition: max-height .32s ease, padding .32s ease; padding: 0 1.3rem;
+}
+.faq-item.open .faq-a     { max-height: 300px; padding: 0 1.3rem 1.1rem; }
+.faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--cyan); }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CTA — призыв к действию
+═══════════════════════════════════════════════════════════════ */
+.cta-section { position: relative; z-index: 1; padding: 5rem 1.5rem; text-align: center; }
+.cta-inner   { max-width: 500px; margin: 0 auto; }
+
+.cta-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 900;
+  color: var(--white); margin-bottom: .9rem; line-height: 1.2;
+}
+.cta-title .g {
+  background: linear-gradient(135deg, var(--cyan), var(--aurora));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.cta-note { font-size: .88rem; color: var(--text); opacity: .6; margin-bottom: 2rem; line-height: 1.7; }
+
+.cta-btns { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; }
+
+.btn-main {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: rgba(139,47,255,.1); border: 1.5px solid rgba(139,47,255,.45);
+  border-radius: 100px; padding: .95rem 2.2rem;
+  font-family: 'Orbitron', monospace; font-size: .82rem; font-weight: 700; letter-spacing: .05em;
+  color: var(--white); cursor: pointer; text-decoration: none;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 24px rgba(139,47,255,.18), inset 0 1px 0 rgba(255,255,255,.08);
+  transition: background .25s, border-color .25s, box-shadow .25s, transform .2s;
+}
+.btn-main:hover {
+  background: rgba(139,47,255,.2); border-color: rgba(139,47,255,.7);
+  box-shadow: 0 0 40px rgba(139,47,255,.3); transform: translateY(-2px);
+}
+
+.btn-sec {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: rgba(6,230,255,.05); border: 1px solid rgba(6,230,255,.25);
+  border-radius: 100px; padding: .95rem 2.2rem;
+  font-family: 'Orbitron', monospace; font-size: .82rem; font-weight: 700; letter-spacing: .05em;
+  color: var(--cyan); cursor: pointer; text-decoration: none;
+  backdrop-filter: blur(16px);
+  transition: background .25s, border-color .25s, transform .2s;
+}
+.btn-sec:hover { background: rgba(6,230,255,.1); border-color: rgba(6,230,255,.5); transform: translateY(-2px); }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ПОДВАЛ
+═══════════════════════════════════════════════════════════════ */
+footer {
+  position: relative; z-index: 1; padding: 1.8rem 1.5rem;
+  text-align: center; border-top: 1px solid rgba(139,47,255,.1);
+  font-size: .75rem; color: var(--muted); letter-spacing: .07em;
+}
+footer .logo {
+  font-family: 'Orbitron', monospace; font-weight: 700;
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   МОДАЛЬНОЕ ОКНО — контакты
+═══════════════════════════════════════════════════════════════ */
+#contactModal {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  align-items: center; justify-content: center;
+  background: rgba(2,0,8,.82); backdrop-filter: blur(14px);
+}
+#contactModal.open { display: flex; }
+
+.modal-box {
+  background: linear-gradient(135deg, rgba(13,0,48,.96), rgba(6,0,26,.96));
+  border: 1px solid rgba(139,47,255,.28); border-radius: 22px;
+  padding: 2.2rem; max-width: 420px; width: 90%; text-align: center;
+  backdrop-filter: blur(28px); box-shadow: 0 0 50px rgba(139,47,255,.18);
+  animation: modalIn .28s ease; position: relative;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(16px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.modal-close {
+  position: absolute; top: .9rem; right: 1.1rem;
+  font-size: 1.2rem; color: var(--muted); cursor: pointer;
+  background: none; border: none; transition: color .2s;
+}
+.modal-close:hover { color: var(--white); }
+
+.modal-title {
+  font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 700;
+  color: var(--white); margin-bottom: .4rem; margin-top: .3rem;
+}
+.modal-note { font-size: .83rem; color: var(--text); opacity: .65; margin-bottom: 1.6rem; line-height: 1.6; }
+
+.slinks { display: flex; flex-direction: column; gap: .6rem; }
+.slink {
+  display: flex; align-items: center; gap: .9rem;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 12px; padding: .8rem 1.1rem;
+  text-decoration: none; color: var(--white); backdrop-filter: blur(8px);
+  transition: border-color .2s, background .2s;
+}
+.slink:hover { border-color: rgba(6,230,255,.3); background: rgba(6,230,255,.05); }
+.slink-icon   { font-size: 1.3rem; }
+.slink-name   { font-size: .8rem; font-weight: 700; color: var(--white); }
+.slink-handle { font-size: .72rem; color: var(--muted); margin-top: .05rem; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   АДАПТИВ
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .module-header { flex-wrap: wrap; }
+  .module-meta   { margin-left: 0; flex-direction: row; margin-top: .5rem; }
+  .about-strip   { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
 <body>
 
-<div class="stars"></div>
+<!-- Фон -->
+<div class="space-bg"></div>
+<canvas id="starfield"></canvas>
+<canvas id="fallingStars"></canvas>
+<div class="nebula nebula-1"></div>
+<div class="nebula nebula-2"></div>
+<div class="nebula nebula-3"></div>
 
-<!-- floating particles -->
-<div class="particle" style="width:4px;height:4px;background:var(--glow1);left:10%;animation-duration:18s;animation-delay:0s;"></div>
-<div class="particle" style="width:3px;height:3px;background:var(--glow3);left:30%;animation-duration:24s;animation-delay:3s;"></div>
-<div class="particle" style="width:5px;height:5px;background:var(--glow2);left:55%;animation-duration:20s;animation-delay:7s;"></div>
-<div class="particle" style="width:2px;height:2px;background:var(--gold);left:75%;animation-duration:16s;animation-delay:1s;"></div>
-<div class="particle" style="width:3px;height:3px;background:var(--glow4);left:88%;animation-duration:22s;animation-delay:5s;"></div>
-
-<!-- NAV -->
+<!-- ══════════ НАВИГАЦИЯ ══════════ -->
 <nav>
-  <div class="nav-logo">⚡ WEBCRAFT</div>
+  <div class="nav-logo">WEBCRAFT</div>
   <div class="nav-links">
-    <a href="#modules">Уроки</a>
-    <a href="#audience">Кому подходит</a>
+    <a href="#program">Программа</a>
     <a href="#results">Результаты</a>
     <a href="#faq">FAQ</a>
   </div>
+  <a href="#" class="nav-cta" id="navCta">Записаться</a>
 </nav>
 
-<!-- HERO -->
-<section class="hero" style="padding-top:80px;">
-  <div class="hero-badge">🚀 СТАРТ В МИР ВЕБ-РАЗРАБОТКИ</div>
-  <h1 class="hero-title">WEBCRAFT<br>ВСЕЛЕННАЯ САЙТОВ</h1>
-  <div class="hero-sub">HTML &amp; CSS для детей</div>
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span class="eyebrow-line"></span>
+    АВТОРСКИЙ КУРС · HTML & CSS
+    <span class="eyebrow-line"></span>
+  </div>
+  <h1 class="hero-title">WEBCRAFT</h1>
+  <div class="hero-sub">Всемирная паутина</div>
   <p class="hero-desc">
-    За 16 уроков (4 месяца) ребёнок пройдёт путь от полного новичка
-    до создателя настоящих сайтов с анимациями и живым адресом в интернете.
+    На курсе мы изучим HTML и CSS — два языка, которые лежат в основе каждого сайта.<br>
+    HTML это каркас сайта, он отвечает за все содержимое на сайте, <br>
+    а CSS превращает сайт в красивый и стильный!<br>
+    Уже после первых уроков ребенок сможет создавать настоящие веб-страницы!
   </p>
   <div class="hero-pills">
-    <span class="pill">🎂 От 7 лет</span>
-    <span class="pill">🏆 С нуля до результата</span>
-    <span class="pill">📅 Урок раз в неделю</span>
-    <span class="pill">⚡ 3 уровня сложности</span>
-    <span class="pill">🌍 Реальный сайт в интернете</span>
-  </div>
-  <a href="#modules" class="hero-cta">
-    🔭 Смотреть программу курсаscr
-  </a>
+    <span class="pill">От 7 лет</span>
+    <span class="pill">Занятия 1 на 1 или группа из 3 учеников</span>
+    <span class="pill">HTML / CSS</span>
+    <span class="pill">16 уроков · 4 месяца</span>
+    <span class="pill">3 уровня сложности</span>
+    <span class="pill">Первый урок бесплатно</span>
 
+  </div>
+  <a href="#" class="hero-btn" id="heroCta">Записаться на пробный урок</a>
 </section>
-
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stat-item">
-    <div class="stat-num">16</div>
-    <div class="stat-label">УРОКОВ</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">4</div>
-    <div class="stat-label">МЕСЯЦА</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">4</div>
-    <div class="stat-label">МОДУЛЯ</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">16</div>
-    <div class="stat-label">ПРОЕКТОВ</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">7+</div>
-    <div class="stat-label">ЛЕТ</div>
-  </div>
-</div>
 
 <div class="glow-divider"></div>
 
-<!-- MODULES -->
-<section class="section" id="modules">
+<!-- ══════════ О КУРСЕ ══════════ -->
+<section class="section">
   <div class="section-inner">
-    <div class="section-tag">// ПРОГРАММА КУРСА</div>
-    <h2 class="section-title">4 Модуля — 4 Месяца</h2>
-    <p class="section-desc">Каждый урок — один конкретный результат. Каждый месяц — новая сверхспособность. На каждом уроке 3 варианта проекта на выбор.</p>
+    <div class="about-strip">
+      <div class="about-avatar">👩‍💻</div>
+      <div class="about-text">
+        <p>
+          Авторский курс — каждый урок провожу лично. Меня зовут Мария
+        </p>
+        <div class="about-perks">
+          <span class="about-perk">Живые уроки</span>
+          <span class="about-perk">Обратная связь</span>
+          <span class="about-perk">Гибкий темп</span>
+          <span class="about-perk">Проекты по интересам</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div class="tabs" id="module-tabs">
+<div class="glow-divider"></div>
+
+<!-- ══════════ ПРОГРАММА ══════════ -->
+<section class="section" id="program">
+  <div class="section-inner">
+    <div class="section-tag">// Программа курса</div>
+    <h2 class="section-title">4 модуля · 16 уроков</h2>
+    <p class="section-desc">На каждом уроке — три варианта проекта на выбор: простой, средний и сложный.</p>
+
+    <!-- Табы -->
+    <div class="tabs">
       <button class="tab-btn active" data-tab="m1">🦴 Модуль 1</button>
-      <button class="tab-btn" data-tab="m2">🎨 Модуль 2</button>
-      <button class="tab-btn" data-tab="m3">📐 Модуль 3</button>
-      <button class="tab-btn" data-tab="m4">🌀 Модуль 4</button>
+      <button class="tab-btn"        data-tab="m2">🎨 Модуль 2</button>
+      <button class="tab-btn"        data-tab="m3">📐 Модуль 3</button>
+      <button class="tab-btn"        data-tab="m4">🌀 Модуль 4</button>
     </div>
 
-    <!-- MODULE 1 -->
+    <!-- Модуль 1 -->
     <div class="module-panel active" id="m1">
       <div class="module-header">
         <div class="module-icon">🦴</div>
         <div class="module-header-info">
-          <h3>МОДУЛЬ 1 — Скелет Интернета</h3>
-          <p>Основы HTML. Как устроены все сайты в мире изнутри</p>
+          <h3>Скелет интернета — основы HTML</h3>
+          <p>Как устроены сайты изнутри. Первые страницы, теги, структура.</p>
         </div>
         <div class="module-meta">
-          <div class="module-weeks">📅 УРОКИ 1–4</div>
-          <div class="module-weeks">🗓 МЕСЯЦ 1</div>
+          <div class="module-tag">Уроки 1–4</div>
+          <div class="module-tag">Месяц 1</div>
         </div>
       </div>
       <div class="lessons-grid" id="lessons-m1"></div>
     </div>
 
-    <!-- MODULE 2 -->
+    <!-- Модуль 2 -->
     <div class="module-panel" id="m2">
       <div class="module-header">
         <div class="module-icon">🎨</div>
         <div class="module-header-info">
-          <h3>МОДУЛЬ 2 — Дизайнер из Будущего</h3>
-          <p>Стили CSS. Делаем сайт красивым как в Apple и Netflix</p>
+          <h3>Дизайнер из будущего — стили CSS</h3>
+          <p>Цвета, шрифты, кнопки, тени. Сайт начинает выглядеть как настоящий.</p>
         </div>
         <div class="module-meta">
-          <div class="module-weeks">📅 УРОКИ 5–8</div>
-          <div class="module-weeks">🗓 МЕСЯЦ 2</div>
+          <div class="module-tag">Уроки 5–8</div>
+          <div class="module-tag">Месяц 2</div>
         </div>
       </div>
       <div class="lessons-grid" id="lessons-m2"></div>
     </div>
 
-    <!-- MODULE 3 -->
+    <!-- Модуль 3 -->
     <div class="module-panel" id="m3">
       <div class="module-header">
         <div class="module-icon">📐</div>
         <div class="module-header-info">
-          <h3>МОДУЛЬ 3 — Архитектор Пространства</h3>
-          <p>Flexbox и Layout. Управляем расположением блоков как профи</p>
+          <h3>Архитектор пространства — Flexbox</h3>
+          <p>Управляем расположением блоков. Галереи, навигация, полноценные макеты.</p>
         </div>
         <div class="module-meta">
-          <div class="module-weeks">📅 УРОКИ 9–12</div>
-          <div class="module-weeks">🗓 МЕСЯЦ 3</div>
+          <div class="module-tag">Уроки 9–12</div>
+          <div class="module-tag">Месяц 3</div>
         </div>
       </div>
       <div class="lessons-grid" id="lessons-m3"></div>
     </div>
 
-    <!-- MODULE 4 -->
+    <!-- Модуль 4 -->
     <div class="module-panel" id="m4">
       <div class="module-header">
         <div class="module-icon">🌀</div>
         <div class="module-header-info">
-          <h3>МОДУЛЬ 4 — Живой Код и Выход в Мир</h3>
-          <p>Анимации, адаптивность и публикация настоящего сайта в интернете</p>
+          <h3>Живой код — анимации и запуск</h3>
+          <p>Hover-эффекты, CSS-анимации, адаптивность. Публикация сайта с реальным URL.</p>
         </div>
         <div class="module-meta">
-          <div class="module-weeks">📅 УРОКИ 13–16</div>
-          <div class="module-weeks">🗓 МЕСЯЦ 4</div>
+          <div class="module-tag">Уроки 13–16</div>
+          <div class="module-tag">Месяц 4</div>
         </div>
       </div>
       <div class="lessons-grid" id="lessons-m4"></div>
     </div>
+
   </div>
 </section>
 
 <div class="glow-divider"></div>
 
-<!-- FOR WHOM -->
-<section class="section" id="audience">
-  <div class="section-inner">
-    <div class="section-tag">// ДЛЯ КОГО</div>
-    <h2 class="section-title">Курс подходит всем</h2>
-    <p class="section-desc">Три уровня сложности на каждом уроке — каждый работает в своём темпе</p>
-    <div class="audience-grid">
-      <div class="audience-card">
-        <div class="aud-icon">🌱</div>
-        <div class="aud-title">Полный новичок (7+)</div>
-        <div class="aud-desc">Никогда не видел код? Отлично. Мы начинаем с самого-самого начала. Первый результат — уже на первом уроке.</div>
-      </div>
-      <div class="audience-card">
-        <div class="aud-icon">⚡</div>
-        <div class="aud-title">Кто уже знакомился с кодом</div>
-        <div class="aud-desc">Уже пробовал Scratch или Roblox? Здесь ты узнаешь, как работает настоящий интернет — и сделаешь свою версию</div>
-      </div>
-      <div class="audience-card">
-        <div class="aud-icon">🚀</div>
-        <div class="aud-title">Продвинутый</div>
-        <div class="aud-desc">Выбирай сложные проекты каждого урока. Создавай анимации, пиши чистый код и публикуй сайт в реальном интернете.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="glow-divider"></div>
-
-<!-- TIMELINE -->
-<section class="section">
-  <div class="section-inner">
-    <div class="section-tag">// КАК ПРОХОДИТ ОБУЧЕНИЕ</div>
-    <h2 class="section-title">4 Месяца — 4 Суперсилы</h2>
-    <p class="section-desc">Один урок в неделю — и к концу курса ребёнок выйдет в настоящий интернет</p>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-month">МЕСЯЦ 1 · УРОКИ 1–4</div>
-        <div class="tl-title">🦴 Строим скелет сайта</div>
-        <div class="tl-desc">Первые теги, первые страницы, первая карточка о себе или любимом персонаже. Родитель видит результат уже в конце первого месяца.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--glow3);"></div>
-        <div class="tl-month">МЕСЯЦ 2 · УРОКИ 5–8</div>
-        <div class="tl-title">🎨 Добавляем стиль и красоту</div>
-        <div class="tl-desc">Цвета, шрифты, кнопки, эффекты. Сайт начинает выглядеть как настоящий. Проект месяца — меню кафе или карточка игры.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--glow2);"></div>
-        <div class="tl-month">МЕСЯЦ 3 · УРОКИ 9–12</div>
-        <div class="tl-title">📐 Управляем пространством</div>
-        <div class="tl-desc">Flexbox — ключ к профессиональной вёрстке. Создаём галереи, навигацию, полноценные страницы с правильной структурой.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--gold);"></div>
-        <div class="tl-month">МЕСЯЦ 4 · УРОКИ 13–16</div>
-        <div class="tl-title">🌍 Выходим в реальный интернет</div>
-        <div class="tl-desc">Анимации, адаптивность на телефон, публикация сайта с настоящим URL. Финальная презентация и сертификат выпускника.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="glow-divider"></div>
-
-<!-- RESULTS -->
+<!-- ══════════ РЕЗУЛЬТАТЫ ══════════ -->
 <section class="section" id="results">
   <div class="section-inner">
-    <div class="section-tag">// ЧТО ПОЛУЧИТ РЕБЁНОК</div>
-    <h2 class="section-title">Реальные Результаты</h2>
-    <p class="section-desc">Не просмотренные видео, а созданные вещи</p>
-    <div class="results-grid">
-      <div class="result-card">
-        <div class="result-icon">🌐</div>
-        <div class="result-text"><strong>Настоящий сайт</strong> с реальным адресом в интернете, который можно показать друзьям</div>
-      </div>
-      <div class="result-card">
-        <div class="result-icon">🏆</div>
-        <div class="result-text"><strong>Портфолио проектов</strong> — несколько работ на каждую тему</div>
-      </div>
-      <div class="result-card">
-        <div class="result-icon">🎓</div>
-        <div class="result-text"><strong>Сертификат</strong> Webcraft Universe о прохождении курса</div>
-      </div>
-      <div class="result-card">
-        <div class="result-icon">🧠</div>
-        <div class="result-text"><strong>Навык думать кодом</strong> — структурное и логическое мышление</div>
-      </div>
-      <div class="result-card">
-        <div class="result-icon">🎨</div>
-        <div class="result-text"><strong>Дизайн-мышление</strong> — понимание цвета, типографики и композиции</div>
-      </div>
-      <div class="result-card">
-        <div class="result-icon">🚀</div>
-        <div class="result-text"><strong>База для JavaScript</strong> — следующий шаг к полноценному программированию</div>
-      </div>
+    <div class="section-tag">// Что получит ребёнок</div>
+    <h2 class="section-title">Результаты курса</h2>
+    <p class="section-desc">Не просто знания — конкретные вещи, которые можно показать.</p>
+    <div class="gets-grid">
+      <div class="get-card"><div class="get-icon">🌐</div><div class="get-text"><strong>Сайт в интернете</strong>Настоящий адрес, который можно открыть с любого устройства</div></div>
+      <div class="get-card"><div class="get-icon">🗂️</div><div class="get-text"><strong>Портфолио проектов</strong>Работы с каждого урока — от первой страницы до финального сайта</div></div>
+      <div class="get-card"><div class="get-icon">🎓</div><div class="get-text"><strong>Сертификат</strong>О прохождении авторского курса WEBCRAFT</div></div>
+      <div class="get-card"><div class="get-icon">🧠</div><div class="get-text"><strong>Понимание кода</strong>Ребёнок видит любой сайт и понимает, как он устроен</div></div>
+      <div class="get-card"><div class="get-icon">🐍</div><div class="get-text"><strong>Готовность к следующему шагу</strong>Основа для изучения JavaScript или Python</div></div>
+      <div class="get-card"><div class="get-icon">⚡</div><div class="get-text"><strong>Уверенность</strong>«Я сделал это сам» — то, что остаётся надолго</div></div>
     </div>
   </div>
 </section>
 
 <div class="glow-divider"></div>
 
-<!-- FAQ -->
+<!-- ══════════ FAQ ══════════ -->
 <section class="section" id="faq">
   <div class="section-inner">
-    <div class="section-tag">// ВОПРОСЫ </div>
-    <h2 class="section-title">Вопросы и Ответы</h2>
-    <div class="faq-list">
+    <div class="section-tag">// Вопросы</div>
+    <h2 class="section-title">Часто спрашивают</h2>
+    <div class="faq-list" style="max-width:680px;">
       <div class="faq-item">
-        <div class="faq-q">С какого возраста можно записаться? <span class="faq-arrow">▾</span></div>
-        <div class="faq-a">Курс разработан для детей от 7 лет/Для самых маленьких я даю простые объяснения и визуальные примеры/Дети 11–14 лет смогут работать более самостоятельно и выбирать более сложные проекты</div>
+        <div class="faq-q">Это живые уроки или записанные видео? <span class="faq-arrow">▾</span></div>
+        <div class="faq-a">Только живые уроки один на один. Провожу каждое занятие лично — ребёнок видит меня в видеозвонке, я вижу его экран и сразу отвечаю на вопросы.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Нужен ли компьютер?<span class="faq-arrow">▾</span></div>
-        <div class="faq-a">Нужен любой компьютер или ноутбук с браузером (Chrome, Firefox, Edge)</div>
+        <div class="faq-q">С какого возраста подходит курс? <span class="faq-arrow">▾</span></div>
+        <div class="faq-a">От 7 лет. Для младших — объясняю на простых визуальных примерах. Дети 11–14 лет работают более самостоятельно и выбирают более сложные проекты.</div>
       </div>
-
       <div class="faq-item">
-        <div class="faq-q">Как проходят уроки? <span class="faq-arrow">▾</span></div>
-        <div class="faq-a">Уроки проходят онлайн/Один урок в неделю, 60 минут/Между уроками ребёнок выполняет домашнее задание </div>
+        <div class="faq-q">Нужен ли опыт работы с компьютером? <span class="faq-arrow">▾</span></div>
+        <div class="faq-a">Нет. Нужен только компьютер или ноутбук с браузером. Никаких специальных программ и предыдущего опыта — начинаем с нуля.</div>
       </div>
-
       <div class="faq-item">
-        <div class="faq-q">После курса — что дальше? <span class="faq-arrow">▾</span></div>
-        <div class="faq-a">После курса ребёнок готов к изучению JavaScript — языка, который делает сайты «умными» и интерактивными. HTML и CSS — это фундамент, без которого не бывает ни одного веб-разработчика.</div>
+        <div class="faq-q">Как проходит урок? <span class="faq-arrow">▾</span></div>
+        <div class="faq-a">60 минут онлайн, один на один. Объясняю тему, вместе пишем код, ребёнок делает проект. После урока присылает работу — даю письменную обратную связь.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Что будет после курса? <span class="faq-arrow">▾</span></div>
+        <div class="faq-a">HTML и CSS — фундамент. После курса ребёнок готов к JavaScript (интерактивность) или Python (автоматизация, данные, ИИ). Расскажу что подойдёт лучше по итогам занятий.</div>
       </div>
     </div>
   </div>
@@ -711,200 +825,418 @@ nav{
 
 <div class="glow-divider"></div>
 
-<!-- CTA -->
+<!-- ══════════ CTA ══════════ -->
 <section class="cta-section">
-  <h2 class="cta-title">Готовы начать<br>своё <span>путешествие?</span></h2>
-  <div class="cta-buttons">
-    <a href="#" class="btn-primary">🚀 Записаться на пробный урок</a>
-    <a href="#modules" class="btn-secondary">📋 Смотреть программу</a>
+  <div class="cta-inner">
+    <h2 class="cta-title">Первый урок — <span class="g">бесплатно</span></h2>
+    <p class="cta-note">Познакомимся, разберёмся в уровне ребёнка и напишем первый HTML-код прямо на занятии.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-main" id="ctaCta">Написать и записаться</a>
+      <a href="#program" class="btn-sec">Смотреть программу</a>
+    </div>
   </div>
 </section>
 
+<!-- ══════════ ПОДВАЛ ══════════ -->
 <footer>
-  <span>⚡ WEBCRAFT UNIVERSE</span> · HTML &amp; CSS для детей · 16 уроков · 4 месяца · Результат с первого дня
+  <span class="logo">⚡ WEBCRAFT</span> &nbsp;·&nbsp; HTML & CSS для детей &nbsp;·&nbsp; Авторский курс &nbsp;·&nbsp; Занятия 1 на 1
 </footer>
 
+<!-- ══════════ МОДАЛЬНОЕ ОКНО ══════════ -->
+<div id="contactModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div style="font-size:2rem;margin-bottom:.6rem;">✉️</div>
+    <div class="modal-title">Напишите мне</div>
+    <div class="modal-note">Первый урок бесплатно. Отвечу быстро — договоримся об удобном времени.</div>
+    <div class="slinks">
+      <a href="https://t.me/ВАШ_ЛОГИН" target="_blank" class="slink">
+        <span class="slink-icon">✈️</span>
+        <div><div class="slink-name">Telegram</div><div class="slink-handle">@ВАШ_ЛОГИН</div></div>
+      </a>
+      <a href="https://wa.me/7XXXXXXXXXX" target="_blank" class="slink">
+        <span class="slink-icon">💬</span>
+        <div><div class="slink-name">WhatsApp</div><div class="slink-handle">+7 (XXX) XXX-XX-XX</div></div>
+      </a>
+      <a href="https://vk.com/ВАШ_ЛОГИН" target="_blank" class="slink">
+        <span class="slink-icon">🔵</span>
+        <div><div class="slink-name">ВКонтакте</div><div class="slink-handle">vk.com/ВАШ_ЛОГИН</div></div>
+      </a>
+      <a href="https://instagram.com/ВАШ_ЛОГИН" target="_blank" class="slink">
+        <span class="slink-icon">📸</span>
+        <div><div class="slink-name">Instagram</div><div class="slink-handle">@ВАШ_ЛОГИН</div></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+
 <script>
-// ─── DATA ───────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════════
+   СТАТИЧНЫЕ ЗВЁЗДЫ НА CANVAS (мерцающие точки на фоне)
+═══════════════════════════════════════════════════════════════ */
+(function initStarfield() {
+  const canvas = document.getElementById('starfield');
+  const ctx    = canvas.getContext('2d');
+  let   stars  = [];
+
+  const STAR_COLORS = ['255,255,255', '6,230,255', '168,85,247', '255,45,138', '0,255,213'];
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function createStars() {
+    stars = [];
+    const count = Math.floor(canvas.width * canvas.height / 2800);
+
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x:     Math.random() * canvas.width,
+        y:     Math.random() * canvas.height,
+        r:     Math.random() * 1.4 + 0.2,
+        alpha: Math.random() * 0.65 + 0.2,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.0007 + 0.0002,
+        color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)]
+      });
+    }
+  }
+
+  function drawStars(time) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (const star of stars) {
+      // Мерцание через синус
+      const a = star.alpha * (0.5 + 0.5 * Math.sin(star.phase + time * star.speed * 60));
+
+      // Точка
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${star.color},${a})`;
+      ctx.fill();
+
+      // Ореол для крупных звёзд
+      if (star.r > 1.1) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r * 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${star.color},${a * 0.09})`;
+        ctx.fill();
+      }
+    }
+  }
+
+  let time = 0;
+  function loop() {
+    time += 0.016;
+    drawStars(time);
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  createStars();
+  loop();
+  window.addEventListener('resize', () => { resize(); createStars(); });
+})();
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ПАДАЮЩИЕ ЗВЁЗДЫ — Canvas, строго вертикально вниз
+   Каждая звезда: яркая точка + хвост-градиент + мягкое свечение
+═══════════════════════════════════════════════════════════════ */
+(function initFallingStars() {
+  const canvas = document.getElementById('fallingStars');
+  const ctx    = canvas.getContext('2d');
+
+  // Палитра в тон сайту: [r, g, b]
+  const PALETTE = [
+    [255, 255, 255],   // белый
+    [  6, 230, 255],   // cyan
+    [168,  85, 247],   // aurora/violet
+    [255,  45, 138],   // pink
+    [  0, 255, 213],   // teal
+    [255, 215,   0],   // gold
+    [139,  47, 255],   // deep violet
+  ];
+
+  const COUNT = 35;  // кол-во звёзд одновременно на экране
+  let W, H;
+  let meteors = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  // Создать одну звезду — сразу в случайной точке по высоте (чтобы старт не был синхронным)
+  function createMeteor(randomY = false) {
+    const [r, g, b] = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+    return {
+      x:       Math.random() * W,                         // фиксированная горизонталь
+      y:       randomY ? Math.random() * H : -20,         // старт сверху или рандом
+      r:       Math.random() * 1.8 + 0.8,                 // радиус точки: 0.8–2.6px
+      speed:   Math.random() * 1.8 + 0.6,                 // px за кадр: 0.6–2.4
+      tailLen: Math.random() * 18 + 6,                    // длина хвоста: 6–24px (короткий, натуральный)
+      alpha:   Math.random() * 0.5 + 0.5,                 // яркость 0.5–1.0
+      r_:r, g_:g, b_:b,
+    };
+  }
+
+  function initMeteors() {
+    meteors = [];
+    for (let i = 0; i < COUNT; i++) {
+      meteors.push(createMeteor(true)); // первый кадр — разбросаны по всему экрану
+    }
+  }
+
+  function drawMeteor(m) {
+    const { x, y, r, tailLen, alpha, r_, g_, b_ } = m;
+
+    // ── Хвост — вертикальный градиент снизу вверх (от точки к прозрачному) ──
+    const grad = ctx.createLinearGradient(x, y, x, y - tailLen);
+    grad.addColorStop(0,   `rgba(${r_},${g_},${b_},${alpha * 0.9})`);
+    grad.addColorStop(0.4, `rgba(${r_},${g_},${b_},${alpha * 0.3})`);
+    grad.addColorStop(1,   `rgba(${r_},${g_},${b_},0)`);
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y - tailLen);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth   = r * 0.7;
+    ctx.lineCap     = 'round';
+    ctx.stroke();
+
+    // ── Ядро — яркая точка ──
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${r_},${g_},${b_},${alpha})`;
+    ctx.fill();
+
+    // ── Свечение вокруг точки (большой мягкий круг) ──
+    const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 5);
+    glow.addColorStop(0,   `rgba(${r_},${g_},${b_},${alpha * 0.4})`);
+    glow.addColorStop(1,   `rgba(${r_},${g_},${b_},0)`);
+    ctx.beginPath();
+    ctx.arc(x, y, r * 5, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    for (let i = 0; i < meteors.length; i++) {
+      const m = meteors[i];
+
+      // Мерцание — лёгкое колебание прозрачности
+      m.alpha += (Math.random() - 0.5) * 0.04;
+      m.alpha  = Math.max(0.3, Math.min(1.0, m.alpha));
+
+      drawMeteor(m);
+
+      // Двигаем вниз
+      m.y += m.speed;
+
+      // Вышла за нижний край — перезапускаем сверху
+      if (m.y - m.tailLen > H) {
+        meteors[i] = createMeteor(false);
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  resize();
+  initMeteors();
+  tick();
+  window.addEventListener('resize', () => { resize(); initMeteors(); });
+})();
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ДАННЫЕ КУРСА
+═══════════════════════════════════════════════════════════════ */
 const MODULES = {
   m1: [
     {
-      num: "01", title: "🌊 Как интернет плывёт под океаном",
-      what: "История веба, подводные кабели, браузер и сервер — как данные путешествуют по миру. Пишем первую HTML-страницу: DOCTYPE, html, head, body.",
+      num: '01', title: '🌊 Как интернет плывёт под океаном',
+      what: 'История веба, браузер и сервер — как данные путешествуют по миру. Пишем первую HTML-страницу: DOCTYPE, html, head, body.',
       projects: [
-        { level:"ЛЕГКО", text:"Страница «Привет, я [имя]!» — заголовок, несколько абзацев о себе" },
-        { level:"СРЕДНЕ", text:"Мини-энциклопедия о любимом животном или игре с заголовками разного уровня" },
-        { level:"СЛОЖНО", text:"Страница-история «Как посылка летит из магазина ко мне» с разделами и структурой" }
+        { level: 'ЛЕГКО',  text: 'Страница «Привет, я [имя]!» — заголовок и несколько абзацев о себе' },
+        { level: 'СРЕДНЕ', text: 'Мини-энциклопедия о любимом животном или игре с заголовками разного уровня' },
+        { level: 'СЛОЖНО', text: 'Страница-история «Как посылка летит из магазина ко мне» с разделами' }
       ]
     },
     {
-      num: "02", title: "📋 Мой первый список суперсил",
-      what: "Теги ul, ol, li, p, strong, em — структурируем информацию как профи. Разница между маркированными и нумерованными списками.",
+      num: '02', title: '📋 Мой первый список суперсил',
+      what: 'Теги ul, ol, li, p, strong, em. Разница между маркированными и нумерованными списками. Структурируем информацию.',
       projects: [
-        { level:"ЛЕГКО", text:"Список из 5 любимых вещей/игр/блюд с заголовком" },
-        { level:"СРЕДНЕ", text:"«Инструкция по выживанию в школе» — пошаговый нумерованный список с советами" },
-        { level:"СЛОЖНО", text:"Вложенные списки: топ-3 игры, у каждой — список из 3 причин почему она крутая" }
+        { level: 'ЛЕГКО',  text: 'Список из 5 любимых вещей или игр с заголовком' },
+        { level: 'СРЕДНЕ', text: '«Инструкция по выживанию в школе» — пошаговый нумерованный список' },
+        { level: 'СЛОЖНО', text: 'Вложенные списки: топ-3 игры, у каждой — 3 причины почему крутая' }
       ]
     },
     {
-      num: "03", title: "🌀 Телепорт: фото и ссылки",
-      what: "Теги img и a. Абсолютные и относительные ссылки, атрибуты src, href, alt, target. Вставляем картинки, соединяем страницы между собой.",
+      num: '03', title: '🌀 Телепорт: фото и ссылки',
+      what: 'Теги img и a. Атрибуты src, href, alt, target. Вставляем картинки, соединяем страницы между собой.',
       projects: [
-        { level:"ЛЕГКО", text:"Страница с любимой картинкой из интернета и ссылкой на YouTube" },
-        { level:"СРЕДНЕ", text:"«Галерея суперсил»: 3–4 картинки с подписями и ссылками на источники" },
-        { level:"СЛОЖНО", text:"Две связанные страницы: главная → страница о персонаже (и обратно)" }
+        { level: 'ЛЕГКО',  text: 'Страница с любимой картинкой и ссылкой на YouTube' },
+        { level: 'СРЕДНЕ', text: '«Галерея суперсил»: 3–4 картинки с подписями и ссылками' },
+        { level: 'СЛОЖНО', text: 'Две связанные страницы: главная → страница о персонаже (и обратно)' }
       ]
     },
     {
-      num: "04", title: "🦸 Проект: Карточка Героя",
-      what: "Итоговый урок модуля. Объединяем всё: структуру, списки, картинки, ссылки. Делаем полноценную страницу-карточку.",
+      num: '04', title: '🦸 Проект: карточка героя',
+      what: 'Итоговый урок модуля. Объединяем всё: структуру, списки, картинки, ссылки. Первая полноценная страница-карточка.',
       projects: [
-        { level:"ЛЕГКО", text:"Карточка себя: имя, фото, список хобби, любимая ссылка" },
-        { level:"СРЕДНЕ", text:"Карточка любимого персонажа из игры/аниме: способности, история, фото" },
-        { level:"СЛОЖНО", text:"Двухстраничный сайт: главная + подробная страница персонажа с переходами" }
+        { level: 'ЛЕГКО',  text: 'Карточка себя: имя, фото, список хобби, любимая ссылка' },
+        { level: 'СРЕДНЕ', text: 'Карточка любимого персонажа: способности, история, фото' },
+        { level: 'СЛОЖНО', text: 'Двухстраничный сайт: главная + подробная страница с переходами' }
       ]
     }
   ],
   m2: [
     {
-      num: "05", title: "🎨 Язык цвета: как компьютер видит радугу",
-      what: "Подключение CSS. RGB, HEX, именованные цвета. Свойства color и background-color. Почему экран светится и как им управлять.",
+      num: '05', title: '🎨 Язык цвета: как компьютер видит радугу',
+      what: 'Подключение CSS. RGB, HEX, именованные цвета. color и background-color. Почему экран светится и как им управлять.',
       projects: [
-        { level:"ЛЕГКО", text:"Раскрась свою карточку героя — фон и текст в любимых цветах" },
-        { level:"СРЕДНЕ", text:"Страница «Настроение дня» — разные цветовые блоки для разных эмоций" },
-        { level:"СЛОЖНО", text:"«Тёмная тема» и «Светлая тема» — две версии одной страницы на выбор" }
+        { level: 'ЛЕГКО',  text: 'Раскрась карточку героя — фон и текст в любимых цветах' },
+        { level: 'СРЕДНЕ', text: 'Страница «Настроение дня» — цветовые блоки для разных эмоций' },
+        { level: 'СЛОЖНО', text: '«Тёмная тема» и «Светлая тема» — две версии одной страницы' }
       ]
     },
     {
-      num: "06", title: "✍️ Война шрифтов: кто победит?",
-      what: "font-family, font-size, font-weight, text-align, line-height. Подключение Google Fonts. Типографика как у Apple — чистая и читаемая.",
+      num: '06', title: '✍️ Война шрифтов: кто победит?',
+      what: 'font-family, font-size, font-weight, text-align, line-height. Google Fonts. Типографика — как сделать текст читаемым и красивым.',
       projects: [
-        { level:"ЛЕГКО", text:"Сделай заголовок большим, жирным и красивым шрифтом из Google Fonts" },
-        { level:"СРЕДНЕ", text:"Страница-цитата любимого персонажа с красивой типографикой" },
-        { level:"СЛОЖНО", text:"Мини-журнал: 3 записи с разными шрифтами для заголовка, даты и текста" }
+        { level: 'ЛЕГКО',  text: 'Красивый заголовок с Google Fonts' },
+        { level: 'СРЕДНЕ', text: 'Страница-цитата любимого персонажа с продуманной типографикой' },
+        { level: 'СЛОЖНО', text: 'Мини-журнал: 3 записи с разными шрифтами для заголовка, даты и текста' }
       ]
     },
     {
-      num: "07", title: "📦 Магия невидимых коробок",
-      what: "Box Model — margin, padding, border, width, height. Как браузер считает размер элементов. Основа всего веб-дизайна — без этого ничего не работает.",
+      num: '07', title: '📦 Магия невидимых коробок',
+      what: 'Box Model — margin, padding, border, width, height. Как браузер считает размер. Основа всего веб-дизайна.',
       projects: [
-        { level:"ЛЕГКО", text:"Карточка с рамкой, отступами и цветным фоном — просто и красиво" },
-        { level:"СРЕДНЕ", text:"«Ценник»: карточка товара с фото, именем, ценой и кнопкой (пока без CSS hover)" },
-        { level:"СЛОЖНО", text:"3 карточки рядом (через inline-block) — коллекция чего угодно" }
+        { level: 'ЛЕГКО',  text: 'Карточка с рамкой, отступами и цветным фоном' },
+        { level: 'СРЕДНЕ', text: '«Ценник»: карточка товара с фото, именем, ценой и кнопкой' },
+        { level: 'СЛОЖНО', text: '3 карточки рядом — коллекция чего угодно' }
       ]
     },
     {
-      num: "08", title: "💡 Кнопки, тени и градиенты",
-      what: "border-radius, box-shadow, background (linear-gradient). Современный дизайн кнопок и карточек. Неоновые эффекты, как в играх 2025.",
+      num: '08', title: '💡 Кнопки, тени и градиенты',
+      what: 'border-radius, box-shadow, linear-gradient. Современный дизайн кнопок. Как сделать интерфейс объёмным.',
       projects: [
-        { level:"ЛЕГКО", text:"Круглая кнопка с тенью — «Нажми на меня!»" },
-        { level:"СРЕДНЕ", text:"Карточка-меню кафе: блюдо, цена, кнопка заказа с градиентом" },
-        { level:"СЛОЖНО", text:"Меню кафе из параллельной вселенной: 3 карточки с неоновыми эффектами и градиентами" }
+        { level: 'ЛЕГКО',  text: 'Круглая кнопка с тенью — «Нажми на меня!»' },
+        { level: 'СРЕДНЕ', text: 'Карточка-меню кафе с градиентной кнопкой заказа' },
+        { level: 'СЛОЖНО', text: 'Меню из параллельной вселенной: 3 карточки с неоном и градиентами' }
       ]
     }
   ],
   m3: [
     {
-      num: "09", title: "🪖 Команда, равняйсь! Строимся в ряд",
-      what: "Flexbox — display:flex, flex-direction, justify-content, align-items. Главная концепция: контейнер и дети. Как элементы выстраиваются автоматически.",
+      num: '09', title: '🪖 Команда, равняйсь! Строимся в ряд',
+      what: 'Flexbox — display:flex, justify-content, align-items. Контейнер и дети. Как элементы выстраиваются автоматически.',
       projects: [
-        { level:"ЛЕГКО", text:"3 карточки в ряд по центру страницы с Flexbox" },
-        { level:"СРЕДНЕ", text:"Навигационное меню: ссылки выровнены по правому краю, логотип слева" },
-        { level:"СЛОЖНО", text:"Блок «О нас»: фото слева, текст справа — классический двухколоночный макет" }
+        { level: 'ЛЕГКО',  text: '3 карточки в ряд по центру страницы' },
+        { level: 'СРЕДНЕ', text: 'Навигация: ссылки справа, логотип слева' },
+        { level: 'СЛОЖНО', text: '«О нас»: фото слева, текст справа — классический двухколоночный макет' }
       ]
     },
     {
-      num: "10", title: "🔭 Галерея на весь экран",
-      what: "flex-wrap, gap, flex-grow. Адаптивная сетка из карточек. Как элементы переносятся на следующую строку и заполняют пространство.",
+      num: '10', title: '🔭 Галерея на весь экран',
+      what: 'flex-wrap, gap, flex-grow. Адаптивная сетка из карточек. Как элементы переносятся и заполняют пространство.',
       projects: [
-        { level:"ЛЕГКО", text:"4–6 карточек-картинок в адаптивной сетке с flex-wrap" },
-        { level:"СРЕДНЕ", text:"Галерея любимых игр/фильмов/аниме: карточки с названиями и описаниями" },
-        { level:"СЛОЖНО", text:"Сетка-магазин: карточки товаров с фото, ценой и кнопкой — перестраивается при изменении ширины" }
+        { level: 'ЛЕГКО',  text: '4–6 карточек-картинок в сетке с flex-wrap' },
+        { level: 'СРЕДНЕ', text: 'Галерея игр/фильмов/аниме с карточками и описаниями' },
+        { level: 'СЛОЖНО', text: 'Сетка-магазин: карточки с фото и ценой, перестраивается по ширине' }
       ]
     },
     {
-      num: "11", title: "🏠 Шапка и подвал: архитектура сайта",
-      what: "Семантические теги: header, nav, main, footer, section, article. Структура как у настоящих сайтов. Зачем это нужно и почему важно даже для SEO.",
+      num: '11', title: '🏠 Шапка и подвал: архитектура сайта',
+      what: 'header, nav, main, footer, section — структура как у настоящих сайтов. Зачем семантика и почему важна для SEO.',
       projects: [
-        { level:"ЛЕГКО", text:"Страница с header (логотип + меню), main и footer" },
-        { level:"СРЕДНЕ", text:"Одностраничный сайт-портфолио с разделами: о себе, проекты, контакты" },
-        { level:"СЛОЖНО", text:"Лендинг «Спасём планету»: шапка, hero-секция, блок миссии, призыв к действию, подвал" }
+        { level: 'ЛЕГКО',  text: 'Страница с header, main и footer' },
+        { level: 'СРЕДНЕ', text: 'Сайт-портфолио с разделами: о себе, проекты, контакты' },
+        { level: 'СЛОЖНО', text: 'Лендинг «Спасём планету»: шапка, hero-блок, миссия, подвал' }
       ]
     },
     {
-      num: "12", title: "✨ Тени, градиенты и глубина",
-      what: "Углублённая работа с визуальными эффектами: text-shadow, множественные box-shadow, сложные градиенты, CSS-переменные (--custom-property). Делаем интерфейс объёмным.",
+      num: '12', title: '✨ Тени, градиенты и глубина',
+      what: 'text-shadow, множественные box-shadow, сложные градиенты, CSS-переменные. Делаем интерфейс профессиональным.',
       projects: [
-        { level:"ЛЕГКО", text:"Заголовок с text-shadow и фоновый градиент на всю страницу" },
-        { level:"СРЕДНЕ", text:"Карточка с несколькими тенями — эффект «парящего» элемента" },
-        { level:"СЛОЖНО", text:"Полная переработка любого прошлого проекта с CSS-переменными и современными эффектами" }
+        { level: 'ЛЕГКО',  text: 'Заголовок с text-shadow и градиентный фон' },
+        { level: 'СРЕДНЕ', text: 'Карточка с несколькими тенями — эффект «парящего» элемента' },
+        { level: 'СЛОЖНО', text: 'Переработка прошлого проекта с CSS-переменными и современными эффектами' }
       ]
     }
   ],
   m4: [
     {
-      num: "13", title: "👆 Сайт чувствует твой курсор",
-      what: "Псевдокласс :hover и transition. Плавные изменения цвета, размера, тени. Кнопки, которые реагируют на мышь. Как сделать анимацию мягкой и профессиональной.",
+      num: '13', title: '👆 Сайт чувствует твой курсор',
+      what: ':hover и transition. Плавные изменения цвета, размера, тени. Как сделать анимацию мягкой и профессиональной.',
       projects: [
-        { level:"ЛЕГКО", text:"Кнопка, меняющая цвет при наведении с плавным transition" },
-        { level:"СРЕДНЕ", text:"Карточки галереи, которые «поднимаются» при наведении — translateY и тень" },
-        { level:"СЛОЖНО", text:"Полностью интерактивное меню навигации с hover-эффектами и подчёркиванием" }
+        { level: 'ЛЕГКО',  text: 'Кнопка, меняющая цвет при наведении с плавным transition' },
+        { level: 'СРЕДНЕ', text: 'Карточки, которые «поднимаются» при наведении — translateY и тень' },
+        { level: 'СЛОЖНО', text: 'Полностью интерактивная навигация с hover-эффектами' }
       ]
     },
     {
-      num: "14", title: "🎬 CSS-анимация своими руками",
-      what: "@keyframes, animation (duration, iteration-count, timing-function). Создаём движущиеся объекты с нуля. Летающие планеты, пульсирующие кнопки, мерцающий текст.",
+      num: '14', title: '🎬 CSS-анимация своими руками',
+      what: '@keyframes, animation-duration, iteration-count. Создаём движущиеся объекты — планеты, пульс, мерцание.',
       projects: [
-        { level:"ЛЕГКО", text:"Пульсирующий кружок — анимация scale от 1 до 1.2 и обратно" },
-        { level:"СРЕДНЕ", text:"Летающий объект поперёк экрана — translateX по keyframes" },
-        { level:"СЛОЖНО", text:"Мини-космос: несколько анимированных планет на орбите + мерцающие звёзды" }
+        { level: 'ЛЕГКО',  text: 'Пульсирующий кружок — scale от 1 до 1.2 и обратно' },
+        { level: 'СРЕДНЕ', text: 'Летающий объект поперёк экрана по keyframes' },
+        { level: 'СЛОЖНО', text: 'Мини-космос: анимированные планеты + мерцающие звёзды' }
       ]
     },
     {
-      num: "15", title: "📱 Сайт-хамелеон: работает везде",
-      what: "Media queries — адаптивность под телефон, планшет, монитор. Как сайт перестраивается в зависимости от ширины экрана. Мобильный интернет и почему это важно.",
+      num: '15', title: '📱 Сайт-хамелеон: работает везде',
+      what: 'Media queries — адаптивность под телефон, планшет, монитор. Как сайт перестраивается по ширине экрана.',
       projects: [
-        { level:"ЛЕГКО", text:"Карточки галереи: на телефоне в 1 колонку, на компьютере в 3" },
-        { level:"СРЕДНЕ", text:"Навигационное меню: горизонтальное на десктопе, вертикальное на мобильном" },
-        { level:"СЛОЖНО", text:"Полный адаптивный лендинг — все блоки правильно перестраиваются на любом экране" }
+        { level: 'ЛЕГКО',  text: 'Карточки: на телефоне в 1 колонку, на компьютере в 3' },
+        { level: 'СРЕДНЕ', text: 'Меню: горизонтальное на десктопе, вертикальное на мобильном' },
+        { level: 'СЛОЖНО', text: 'Полный адаптивный лендинг — все блоки правильно перестраиваются' }
       ]
     },
     {
-      num: "16", title: "🌍 Выпускной: запуск в интернет",
-      what: "Публикация через GitHub Pages или Netlify — сайт получает реальный URL. Финальная презентация проекта. Разбор портфолио. Сертификат Webcraft Universe.",
+      num: '16', title: '🌍 Выпускной: запуск в интернет',
+      what: 'GitHub Pages или Netlify — сайт получает реальный URL. Финальная презентация, разбор портфолио, сертификат.',
       projects: [
-        { level:"ЛЕГКО", text:"Опубликуй любой готовый проект курса — покажи другу ссылку!" },
-        { level:"СРЕДНЕ", text:"Личный сайт-портфолио с 3–4 своими проектами" },
-        { level:"СЛОЖНО", text:"Полноценный финальный проект: тема на выбор, адаптивный, с анимациями и реальным URL" }
+        { level: 'ЛЕГКО',  text: 'Публикуй любой проект курса — покажи другу ссылку' },
+        { level: 'СРЕДНЕ', text: 'Личный сайт-портфолио с 3–4 проектами' },
+        { level: 'СЛОЖНО', text: 'Финальный проект: адаптивный, с анимациями, с реальным URL' }
       ]
     }
   ]
 };
 
-// ─── RENDER LESSONS ─────────────────────────────────────
+
+/* ═══════════════════════════════════════════════════════════════
+   РЕНДЕР КАРТОЧЕК УРОКОВ
+═══════════════════════════════════════════════════════════════ */
 function renderLessons() {
-  Object.entries(MODULES).forEach(([modKey, lessons]) => {
-    const container = document.getElementById('lessons-' + modKey);
+  Object.entries(MODULES).forEach(([moduleId, lessons]) => {
+    const container = document.getElementById('lessons-' + moduleId);
     if (!container) return;
-    container.innerHTML = lessons.map((l, i) => `
+
+    container.innerHTML = lessons.map(lesson => `
       <div class="lesson-card">
         <div class="lesson-top">
-          <div class="lesson-num">${l.num}</div>
+          <div class="lesson-num">${lesson.num}</div>
           <div>
-            <div class="lesson-title">${l.title}</div>
-            <div class="lesson-what">${l.what}</div>
+            <div class="lesson-title">${lesson.title}</div>
+            <div class="lesson-what">${lesson.what}</div>
           </div>
         </div>
         <div class="projects-toggle" onclick="toggleProjects(this)">
-          <span class="arrow">▸</span> Проекты на выбор (3 уровня)
+          <span class="arr">▸</span> Проекты на выбор
         </div>
         <div class="projects-list">
-          ${l.projects.map(p => {
+          ${lesson.projects.map(p => {
             const cls = p.level === 'ЛЕГКО' ? 'proj-easy' : p.level === 'СРЕДНЕ' ? 'proj-medium' : 'proj-hard';
-            return `<div class="project-item ${cls}">
-              <span class="proj-badge">${p.level}</span>
-              <span class="proj-text">${p.text}</span>
-            </div>`;
+            return `<div class="project-item ${cls}"><span class="proj-badge">${p.level}</span><span class="proj-text">${p.text}</span></div>`;
           }).join('')}
         </div>
       </div>
@@ -913,13 +1245,16 @@ function renderLessons() {
 }
 
 function toggleProjects(btn) {
-  const list = btn.nextElementSibling;
-  const arrow = btn.querySelector('.arrow');
+  const list  = btn.nextElementSibling;
+  const arrow = btn.querySelector('.arr');
   const isOpen = list.classList.toggle('open');
-  arrow.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+  arrow.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0)';
 }
 
-// ─── TABS ────────────────────────────────────────────────
+
+/* ═══════════════════════════════════════════════════════════════
+   ПЕРЕКЛЮЧЕНИЕ ТАБОВ МОДУЛЕЙ
+═══════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -929,17 +1264,40 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// ─── FAQ ─────────────────────────────────────────────────
-document.querySelectorAll('.faq-q').forEach(q => {
-  q.addEventListener('click', () => {
-    const item = q.parentElement;
+
+/* ═══════════════════════════════════════════════════════════════
+   АККОРДЕОН FAQ
+═══════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.faq-q').forEach(question => {
+  question.addEventListener('click', () => {
+    const item    = question.parentElement;
     const wasOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if (!wasOpen) item.classList.add('open');
   });
 });
 
-// ─── INIT ────────────────────────────────────────────────
+
+/* ═══════════════════════════════════════════════════════════════
+   МОДАЛЬНОЕ ОКНО — открытие / закрытие
+═══════════════════════════════════════════════════════════════ */
+const modal = document.getElementById('contactModal');
+
+function openModal()  { modal.classList.add('open'); }
+function closeModal() { modal.classList.remove('open'); }
+
+['navCta', 'heroCta', 'ctaCta'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => { e.preventDefault(); openModal(); });
+});
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ИНИЦИАЛИЗАЦИЯ
+═══════════════════════════════════════════════════════════════ */
 renderLessons();
 </script>
 </body>
