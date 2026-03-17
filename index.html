@@ -9,26 +9,37 @@
 <style>
 /* ═══════════════════════════════════════════════════════════════
    ПЕРЕМЕННЫЕ И СБРОС
+   Все цвета заданы здесь — меняй только в этом блоке
 ═══════════════════════════════════════════════════════════════ */
+
 :root {
-  --cosmos:        #020008;
-  --violet:        #8b2fff;
-  --cyan:          #06e6ff;
-  --teal:          #00ffd5;
-  --pink:          #ff2d8a;
-  --aurora:        #a855f7;
-  --gold:          #ffd700;
-  --green:         #39ff14;
-  --white:         #f0ecff;
-  --text:          #cbbfff;
-  --muted:         #6b5fa0;
-  --glass-bg:      rgba(255,255,255,0.04);
-  --glass-border:  rgba(255,255,255,0.09);
+  --cosmos:        #020008;             /* основной фон страницы */
+  --violet:        #8b2fff;             /* главный фиолетовый акцент */
+  --cyan:          #06e6ff;             /* голубой акцент */
+  --teal:          #00ffd5;             /* бирюзовый */
+  --pink:          #ff2d8a;             /* розовый акцент */
+  --aurora:        #a855f7;             /* светло-фиолетовый */
+  --gold:          #ffd700;             /* золотой */
+  --green:         #39ff14;             /* неоновый зелёный */
+  --white:         #f0ecff;             /* основной белый текст */
+  --text:          #cbbfff;             /* текст второго уровня */
+  --muted:         #6b5fa0;             /* приглушённый текст */
+  --glass-bg:      rgba(255,255,255,0.04);  /* полупрозрачный фон карточек */
+  --glass-border:  rgba(255,255,255,0.09);  /* граница стекло-карточек */
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html  { scroll-behavior: smooth; }
-body  {
+/* Обнуление: все элементы считают размер вместе с border и padding */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
   font-family: 'Exo 2', sans-serif;
   background: var(--cosmos);
   color: var(--text);
@@ -38,117 +49,228 @@ body  {
 
 
 /* ═══════════════════════════════════════════════════════════════
-   КОСМИЧЕСКИЙ ФОН — градиенты + туманности
+   КОСМИЧЕСКИЙ ФОН
+   Многослойный фон: радиальные градиенты + анимированные туманности
 ═══════════════════════════════════════════════════════════════ */
+
+/* Статичный слой градиентов — фиксирован, не скролится со страницей */
 .space-bg {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   background:
-    radial-gradient(ellipse 120% 80% at 20% -10%, rgba(75,0,130,.5)   0%, transparent 60%),
-    radial-gradient(ellipse  80% 60% at 80%  10%, rgba(6,230,255,.15) 0%, transparent 55%),
-    radial-gradient(ellipse 100% 70% at 60%  90%, rgba(255,45,138,.18)0%, transparent 55%),
-    radial-gradient(ellipse  90% 80% at  5%  70%, rgba(168,85,247,.18)0%, transparent 60%),
+    radial-gradient(ellipse 120% 80% at 20% -10%, rgba(75,0,130,.5)    0%, transparent 60%),
+    radial-gradient(ellipse  80% 60% at 80%  10%, rgba(6,230,255,.15)  0%, transparent 55%),
+    radial-gradient(ellipse 100% 70% at 60%  90%, rgba(255,45,138,.18) 0%, transparent 55%),
+    radial-gradient(ellipse  90% 80% at  5%  70%, rgba(168,85,247,.18) 0%, transparent 60%),
     linear-gradient(180deg, #020008 0%, #06001a 35%, #0a0025 65%, #020008 100%);
 }
 
-/* Canvas для статичных звёзд (sparkle-эффект) */
-#starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+/* Canvas для мерцающих статичных звёзд (рисуется через JS) */
+#starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
 
-/* Туманности — медленно дрейфуют */
+/* Canvas для падающих звёзд (рисуется через JS) */
+#fallingStars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Базовые стили туманности — размытые цветные пятна */
 .nebula {
-  position: fixed; border-radius: 50%;
-  pointer-events: none; z-index: 0;
-  filter: blur(90px); opacity: .15;
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(90px);
+  opacity: .15;
   animation: nebulaDrift 30s ease-in-out infinite alternate;
 }
-.nebula-1 { width: 600px; height: 400px; top: -100px; left: -100px; background: radial-gradient(var(--violet), transparent 70%); animation-duration: 35s; }
-.nebula-2 { width: 500px; height: 350px; top:  200px; right: -150px; background: radial-gradient(var(--cyan),   transparent 70%); animation-duration: 28s; animation-delay: -10s; }
-.nebula-3 { width: 700px; height: 450px; bottom: 0;   left: 30%;    background: radial-gradient(var(--pink),   transparent 70%); animation-duration: 40s; animation-delay:  -5s; }
 
-@keyframes nebulaDrift {
-  0%   { transform: translate(0,    0)    scale(1);    }
-  50%  { transform: translate(25px,-18px) scale(1.07); }
-  100% { transform: translate(-18px,12px) scale(.94);  }
+/* Левая верхняя туманность — фиолетовая */
+.nebula-1 {
+  width: 600px;
+  height: 400px;
+  top: -100px;
+  left: -100px;
+  background: radial-gradient(var(--violet), transparent 70%);
+  animation-duration: 35s;
 }
 
+/* Правая туманность — голубая */
+.nebula-2 {
+  width: 500px;
+  height: 350px;
+  top: 200px;
+  right: -150px;
+  background: radial-gradient(var(--cyan), transparent 70%);
+  animation-duration: 28s;
+  animation-delay: -10s;
+}
 
-/* ═══════════════════════════════════════════════════════════════
-   ВТОРОЙ CANVAS — падающие звёзды (рисуются через JS)
-═══════════════════════════════════════════════════════════════ */
-#fallingStars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+/* Нижняя туманность — розовая */
+.nebula-3 {
+  width: 700px;
+  height: 450px;
+  bottom: 0;
+  left: 30%;
+  background: radial-gradient(var(--pink), transparent 70%);
+  animation-duration: 40s;
+  animation-delay: -5s;
+}
+
+/* Медленный дрейф туманностей в разные стороны */
+@keyframes nebulaDrift {
+  0%   { transform: translate(0,     0)    scale(1);    }
+  50%  { transform: translate(25px, -18px) scale(1.07); }
+  100% { transform: translate(-18px, 12px) scale(.94);  }
+}
 
 
 /* ═══════════════════════════════════════════════════════════════
    НАВИГАЦИЯ
+   Фиксированная шапка: логотип | ссылки | кнопка записи
 ═══════════════════════════════════════════════════════════════ */
+
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: .85rem 2.5rem;
   background: rgba(2,0,8,.55);
   border-bottom: 1px solid rgba(139,47,255,.15);
   backdrop-filter: blur(22px) saturate(160%);
 }
 
+/* Логотип WEBCRAFT — градиентный текст */
 .nav-logo {
-  font-family: 'Orbitron', monospace; font-size: .92rem; font-weight: 900;
+  font-family: 'Orbitron', monospace;
+  font-size: .92rem;
+  font-weight: 900;
   letter-spacing: .05em;
   background: linear-gradient(90deg, var(--cyan), var(--violet), var(--pink));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.nav-links { display: flex; gap: 2rem; }
-.nav-links a {
-  font-size: .75rem; color: var(--muted); text-decoration: none;
-  letter-spacing: .1em; text-transform: uppercase; transition: color .2s;
+/* Ссылки в центре навигации */
+.nav-links {
+  display: flex;
+  gap: 2rem;
 }
+
+.nav-links a {
+  font-size: .75rem;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+
 .nav-links a:hover { color: var(--cyan); }
 
+/* Кнопка "Записаться" — правый угол шапки */
 .nav-cta {
-  font-family: 'Orbitron', monospace; font-size: .68rem; font-weight: 700;
-  background: rgba(139,47,255,.1); border: 1px solid rgba(139,47,255,.4);
-  border-radius: 100px; padding: .48rem 1.3rem;
-  color: var(--white); cursor: pointer; text-decoration: none;
+  font-family: 'Orbitron', monospace;
+  font-size: .68rem;
+  font-weight: 700;
+  background: rgba(139,47,255,.1);
+  border: 1px solid rgba(139,47,255,.4);
+  border-radius: 100px;
+  padding: .48rem 1.3rem;
+  color: var(--white);
+  cursor: pointer;
+  text-decoration: none;
   backdrop-filter: blur(12px);
   transition: background .2s, border-color .2s;
 }
-.nav-cta:hover { background: rgba(139,47,255,.2); border-color: rgba(139,47,255,.7); }
 
-@media (max-width: 680px) { .nav-links { display: none; } }
+.nav-cta:hover {
+  background: rgba(139,47,255,.2);
+  border-color: rgba(139,47,255,.7);
+}
+
+/* На мобильных скрываем ссылки — остаётся только логотип и кнопка */
+@media (max-width: 680px) {
+  .nav-links { display: none; }
+}
 
 
 /* ═══════════════════════════════════════════════════════════════
-   HERO
+   HERO — первый экран
+   Центрированный блок с анимированным заголовком и CTA-кнопкой
 ═══════════════════════════════════════════════════════════════ */
+
 .hero {
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 2rem 1.5rem; padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  padding-top: 80px; /* отступ под фиксированную навигацию */
 }
 
+/* Строка над заголовком: "АВТОРСКИЙ КУРС · HTML & CSS" */
 .hero-eyebrow {
-  display: inline-flex; align-items: center; gap: .5rem;
-  font-family: 'Fira Code', monospace; font-size: .7rem;
-  color: var(--muted); letter-spacing: .18em; text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: 'Fira Code', monospace;
+  font-size: .7rem;
+  color: var(--muted);
+  letter-spacing: .18em;
+  text-transform: uppercase;
   margin-bottom: 2rem;
 }
-.eyebrow-line { width: 28px; height: 1px; background: var(--muted); opacity: .5; }
 
+/* Горизонтальные линии по бокам текста eyebrow */
+.eyebrow-line {
+  width: 28px;
+  height: 1px;
+  background: var(--muted);
+  opacity: .5;
+}
+
+/* Главный заголовок WEBCRAFT — анимированный градиентный текст */
 .hero-title {
   font-family: 'Orbitron', monospace;
-  font-size: clamp(2.6rem, 8vw, 6.5rem); font-weight: 900; line-height: 1;
+  font-size: clamp(2.6rem, 8vw, 6.5rem);
+  font-weight: 900;
+  line-height: 1;
   margin-bottom: .5rem;
   background: linear-gradient(135deg, #fff 0%, var(--cyan) 20%, var(--aurora) 50%, var(--pink) 75%, #fff 100%);
   background-size: 400% 400%;
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   animation: gradShift 7s ease-in-out infinite, titleFlicker 12s ease-in-out infinite;
 }
 
+/* Плавный сдвиг цветов градиента */
 @keyframes gradShift {
   0%, 100% { background-position:   0% 50%; }
   50%       { background-position: 100% 50%; }
 }
 
+/* Мерцание заголовка через drop-shadow */
 @keyframes titleFlicker {
   0%,  100% { filter: drop-shadow(0 0 30px rgba(139,47,255,.4)); }
   17%        { filter: drop-shadow(0 0 60px rgba(6,230,255,.8))   drop-shadow(0 0 100px rgba(139,47,255,.5)); }
@@ -161,18 +283,24 @@ nav {
   74%        { filter: drop-shadow(0 0 30px rgba(139,47,255,.4)); }
 }
 
+/* Подзаголовок "Всемирная паутина" — пульсирует */
 .hero-sub {
   font-family: 'Orbitron', monospace;
-  font-size: clamp(.8rem, 2vw, 1.1rem); font-weight: 400;
-  letter-spacing: .22em; text-transform: uppercase;
-  color: var(--teal); margin-bottom: 2rem;
+  font-size: clamp(.8rem, 2vw, 1.1rem);
+  font-weight: 400;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 2rem;
   animation: subBreath 4s ease-in-out infinite;
 }
+
 @keyframes subBreath {
   0%, 100% { opacity: .65; text-shadow: none; }
   50%       { opacity:   1; text-shadow: 0 0 20px rgba(0,255,213,.55), 0 0 40px rgba(0,255,213,.2); }
 }
 
+/* Описание курса */
 .hero-desc {
   max-width: 720px;
   font-size: 1rem;
@@ -182,43 +310,69 @@ nav {
   margin: 0 auto 2.5rem;
 }
 
+/* Контейнер тегов-пилюль: "От 9 лет", "HTML/CSS" и т.д. */
 .hero-pills {
-  display: flex; flex-wrap: wrap; gap: .55rem; justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  justify-content: center;
   margin-bottom: 2.8rem;
 }
+
+/* Один тег-пилюля */
 .pill {
-  background: var(--glass-bg); border: 1px solid var(--glass-border);
-  border-radius: 100px; padding: .4rem 1rem;
-  font-size: .78rem; color: var(--text); opacity: .85;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  padding: .4rem 1rem;
+  font-size: .78rem;
+  color: var(--text);
+  opacity: .85;
   backdrop-filter: blur(8px);
 }
 
+/* Главная кнопка "Записаться на пробный урок" */
 .hero-btn {
-  display: inline-flex; align-items: center; gap: .6rem;
-  background: rgba(139,47,255,.1); border: 1.5px solid rgba(139,47,255,.45);
-  border-radius: 100px; padding: 1rem 2.4rem;
-  font-family: 'Orbitron', monospace; font-size: .85rem; font-weight: 700; letter-spacing: .06em;
-  color: var(--white); cursor: pointer; text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: rgba(139,47,255,.1);
+  border: 1.5px solid rgba(139,47,255,.45);
+  border-radius: 100px;
+  padding: 1rem 2.4rem;
+  font-family: 'Orbitron', monospace;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--white);
+  cursor: pointer;
+  text-decoration: none;
   backdrop-filter: blur(16px);
   box-shadow: 0 0 28px rgba(139,47,255,.2), inset 0 1px 0 rgba(255,255,255,.1);
   transition: background .25s, border-color .25s, box-shadow .25s, transform .25s;
-  position: relative; overflow: hidden;
+  position: relative;
+  overflow: hidden;
   animation: btnPulse 3.5s ease-in-out infinite;
 }
 
+/* Пульсирующее свечение вокруг кнопки */
 @keyframes btnPulse {
-  0%, 100% { box-shadow: 0 0 22px rgba(139,47,255,.2), inset 0 1px 0 rgba(255,255,255,.1); }
+  0%, 100% { box-shadow: 0 0 22px rgba(139,47,255,.2),  inset 0 1px 0 rgba(255,255,255,.1); }
   50%       { box-shadow: 0 0 45px rgba(139,47,255,.45), 0 0 80px rgba(139,47,255,.12), inset 0 1px 0 rgba(255,255,255,.15); }
 }
 
-/* Блик поверх кнопки */
+/* Блик поверх кнопки — скользит слева направо */
 .hero-btn::after {
   content: '';
-  position: absolute; top: 0; left: -120%;
-  width: 55%; height: 100%;
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 55%;
+  height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,.13), transparent);
   animation: shimmerBtn 4.5s ease-in-out infinite;
 }
+
 @keyframes shimmerBtn {
   0%,  55% { left: -120%; }
   80%, 100% { left:  160%; }
@@ -235,68 +389,120 @@ nav {
 
 /* ═══════════════════════════════════════════════════════════════
    ОБЩИЕ ЭЛЕМЕНТЫ РАЗДЕЛОВ
+   Переиспользуются во всех секциях сайта
 ═══════════════════════════════════════════════════════════════ */
+
+/* Светящийся разделитель между секциями */
 .glow-divider {
-  height: 1px; position: relative; z-index: 1;
+  height: 1px;
+  position: relative;
+  z-index: 1;
   background: linear-gradient(90deg, transparent, rgba(139,47,255,.4), rgba(6,230,255,.3), transparent);
 }
 
-.section { position: relative; z-index: 1; padding: 5.5rem 1.5rem; }
-.section-inner { max-width: 1060px; margin: 0 auto; }
+/* Внешняя обёртка любой секции */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 5.5rem 1.5rem;
+}
 
+/* Внутренний контейнер с ограниченной шириной */
+.section-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+/* Тег над заголовком секции: "// Программа курса" */
 .section-tag {
   display: inline-block;
-  font-family: 'Fira Code', monospace; font-size: .68rem;
-  letter-spacing: .2em; text-transform: uppercase;
-  margin-bottom: .7rem; color: var(--muted);
+  font-family: 'Fira Code', monospace;
+  font-size: .68rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  margin-bottom: .7rem;
+  color: var(--muted);
   animation: tagGlimmer 7s ease-in-out infinite;
 }
+
+/* Тег мерцает голубым */
 @keyframes tagGlimmer {
   0%, 100% { color: var(--muted); text-shadow: none; }
   50%       { color: var(--cyan);  text-shadow: 0 0 14px rgba(6,230,255,.5); }
 }
 
+/* Заголовок секции */
 .section-title {
   font-family: 'Orbitron', monospace;
-  font-size: clamp(1.4rem, 3.5vw, 2.2rem); font-weight: 900;
-  color: var(--white); margin-bottom: .6rem;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 900;
+  color: var(--white);
+  margin-bottom: .6rem;
 }
 
+/* Описание под заголовком секции */
 .section-desc {
-  font-size: .95rem; line-height: 1.8;
-  color: var(--text); opacity: .65; max-width: 520px; margin-bottom: 2.5rem;
+  font-size: .95rem;
+  line-height: 1.8;
+  color: var(--text);
+  opacity: .65;
+  max-width: 520px;
+  margin-bottom: 2.5rem;
 }
 
 
 /* ═══════════════════════════════════════════════════════════════
-   О КУРСЕ — полоска с аватаром
+   О КУРСЕ — полоска с описанием автора
 ═══════════════════════════════════════════════════════════════ */
+
+/* Glass-карточка с описанием автора */
 .about-strip {
-  display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
   padding: 2rem 2.5rem;
-  background: var(--glass-bg); border: 1px solid var(--glass-border);
-  border-radius: 20px; backdrop-filter: blur(16px);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: blur(16px);
 }
 
-/*.about-avatar {*/
-/*  width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;*/
-/*  background: linear-gradient(135deg, rgba(139,47,255,.25), rgba(6,230,255,.15));*/
-/*  border: 1px solid rgba(139,47,255,.35);*/
-/*  display: flex; align-items: center; justify-content: center; font-size: 1.8rem;*/
-/*  box-shadow: 0 0 20px rgba(139,47,255,.2);*/
-/*}*/
+/* Текстовый блок — занимает свободное пространство */
+.about-text {
+  flex: 1;
+  min-width: 200px;
+}
 
-.about-text { flex: 1; min-width: 200px; }
-.about-text p { font-size: .9rem; line-height: 1.75; color: var(--text); opacity: .78; }
+.about-text p {
+  font-size: .9rem;
+  line-height: 1.75;
+  color: var(--text);
+  opacity: .78;
+}
 
-.about-perks { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+/* Теги-преимущества под описанием */
+.about-perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+
+/* Один тег-преимущество с пульсирующим свечением */
 .about-perk {
-  font-family: 'Fira Code', monospace; font-size: .7rem;
-  color: var(--cyan); opacity: .8;
-  background: rgba(6,230,255,.06); border: 1px solid rgba(6,230,255,.15);
-  border-radius: 100px; padding: .25rem .75rem;
+  font-family: 'Fira Code', monospace;
+  font-size: .7rem;
+  color: var(--cyan);
+  opacity: .8;
+  background: rgba(6,230,255,.06);
+  border: 1px solid rgba(6,230,255,.15);
+  border-radius: 100px;
+  padding: .25rem .75rem;
   animation: perkGlow 5s ease-in-out infinite;
 }
+
+/* Смещение анимации для эффекта волны */
 .about-perk:nth-child(2) { animation-delay: 1.2s; }
 .about-perk:nth-child(3) { animation-delay: 2.4s; }
 .about-perk:nth-child(4) { animation-delay: 3.6s; }
@@ -308,93 +514,424 @@ nav {
 
 
 /* ═══════════════════════════════════════════════════════════════
-   ПРОГРАММА — табы и уроки
+   ПРОГРАММА КУРСА — СЕКЦИЯ С ТАБАМИ И УРОКАМИ
+   Структура:
+   1. Пробный урок  (.intro-lesson)   — точка входа, CTA
+   2. Табы модулей  (.tabs, .tab-btn) — переключение модулей
+   3. Панели модулей (.module-panel)  — контент каждого модуля
+   4. Карточки уроков (.lesson-card) — один урок
+   5. Проекты        (.projects-list) — три уровня сложности
 ═══════════════════════════════════════════════════════════════ */
-.tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
 
+
+/* ─────────────────────────────────────────────────────────────
+   1. ПРОБНЫЙ УРОК — бесплатная точка входа
+   · Анимированная полоска сверху привлекает внимание
+   · Бейдж "БЕСПЛАТНО" с пульсацией
+   · Glass-morphism в стиле остального сайта
+───────────────────────────────────────────────────────────── */
+
+/* Контейнер пробного урока */
+.intro-lesson {
+  position: relative;
+  max-width: 1060px;       /* совпадает с шириной .section-inner */
+  margin: 0 auto 2.5rem;   /* центрирование + отступ снизу */
+  background: linear-gradient(135deg, rgba(139,47,255,.08), rgba(6,230,255,.04));
+  border: 1px solid rgba(139,47,255,.25);
+  border-radius: 20px;
+  padding: 1.8rem 2rem;
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+  transition: border-color .2s;
+}
+
+/* Анимация смены цвета и свечения рамки */
+@keyframes borderGlow {
+  0%   { border-color: rgba(139,47,255,.7);  box-shadow: 0 0 12px rgba(139,47,255,.5); }
+  25%  { border-color: rgba(6,230,255,.7);   box-shadow: 0 0 12px rgba(6,230,255,.5); }
+  50%  { border-color: rgba(255,45,138,.7);  box-shadow: 0 0 12px rgba(255,45,138,.5); }
+  75%  { border-color: rgba(0,255,213,.7);   box-shadow: 0 0 12px rgba(0,255,213,.5); }
+  100% { border-color: rgba(139,47,255,.7);  box-shadow: 0 0 12px rgba(139,47,255,.5); }
+}
+
+.intro-lesson {
+  animation: borderGlow 4s ease-in-out infinite;
+}
+
+.intro-lesson:hover { border-color: rgba(139,47,255,.4); }
+
+
+/* Бейдж "БЕСПЛАТНО" — абсолютно позиционирован справа сверху */
+.intro-lesson-badge {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  background: rgba(57,255,20,.12);
+  border: 1px solid rgba(57,255,20,.3);
+  color: var(--green);
+  font-family: 'Fira Code', monospace;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: .3rem .8rem;
+  border-radius: 100px;
+  animation: badgePulse 3s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: none; }
+  50%       { box-shadow: 0 0 12px rgba(57,255,20,.25); }
+}
+
+/* Flexbox-контейнер: иконка | текст | кнопка */
+.intro-lesson-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+/*!* Эмодзи-иконка слева *!*/
+/*.intro-lesson-icon {*/
+/*  font-size: 2.8rem;*/
+/*  line-height: 1;*/
+/*  flex-shrink: 0;*/
+/*}*/
+
+/* Текстовый блок — занимает свободное пространство */
+.intro-lesson-info {
+  flex: 1;
+  min-width: 0; /* предотвращает переполнение текста во flex */
+}
+
+/* Заголовок пробного урока */
+.intro-lesson-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 .5rem 0;
+}
+
+/* Описание урока */
+.intro-lesson-desc {
+  font-size: .88rem;
+  color: var(--text);
+  opacity: .72;
+  line-height: 1.65;
+  margin: 0 0 .9rem 0;
+}
+
+/* Строка с описанием итогового проекта урока */
+.intro-lesson-project {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .82rem;
+  color: var(--text);
+  opacity: .65;
+}
+
+/* Бейдж "ПРОЕКТ" — переопределяет базовый .proj-badge */
+.intro-lesson-project .proj-badge {
+  background: rgba(6,230,255,.1);
+  border: 1px solid rgba(6,230,255,.25);
+  color: var(--cyan);
+  font-family: 'Fira Code', monospace;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: .2rem .6rem;
+  border-radius: 100px;
+}
+
+/* CTA-кнопка "Записаться" — справа от текста */
+.intro-lesson-btn {
+  flex-shrink: 0;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: rgba(139,47,255,.1);
+  border: 1px solid rgba(139,47,255,.4);
+  border-radius: 100px;
+  padding: .75rem 1.6rem;
+  font-family: 'Orbitron', monospace;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--white);
+  text-decoration: none;
+  backdrop-filter: blur(12px);
+  transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
+}
+
+.intro-lesson-btn:hover {
+  background: rgba(139,47,255,.2);
+  border-color: rgba(139,47,255,.65);
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(139,47,255,.25);
+}
+
+/* Мобильная версия пробного урока */
+@media (max-width: 680px) {
+  .intro-lesson { padding: 1.5rem 1.2rem; }
+
+  /* Переходим в колонку и центрируем содержимое */
+  .intro-lesson-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .intro-lesson-icon { align-self: center; }
+
+  .intro-lesson-project {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Кнопка растягивается на всю ширину */
+  .intro-lesson-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .intro-lesson-badge {
+    top: .8rem;
+    right: .8rem;
+    font-size: .6rem;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. ТАБЫ МОДУЛЕЙ — переключение между модулями 1–4
+   · Pill-кнопки с glass-эффектом
+   · Активный таб подсвечивается фиолетовым
+───────────────────────────────────────────────────────────── */
+
+/* Контейнер кнопок-табов */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 2rem;
+}
+
+/* Кнопка таба — неактивное состояние */
 .tab-btn {
-  background: var(--glass-bg); border: 1px solid var(--glass-border);
-  border-radius: 100px; padding: .55rem 1.3rem;
-  font-family: 'Exo 2', sans-serif; font-size: .83rem; font-weight: 600;
-  color: var(--muted); cursor: pointer; backdrop-filter: blur(8px); transition: all .2s;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  padding: .55rem 1.3rem;
+  font-family: 'Exo 2', sans-serif;
+  font-size: .83rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all .2s;
 }
-.tab-btn:hover { border-color: rgba(139,47,255,.4); color: var(--white); }
+
+.tab-btn:hover {
+  border-color: rgba(139,47,255,.4);
+  color: var(--white);
+}
+
+/* Активный таб — выделен фиолетовым */
 .tab-btn.active {
-  background: rgba(139,47,255,.15); border-color: rgba(139,47,255,.5);
-  color: var(--white); box-shadow: 0 0 16px rgba(139,47,255,.15);
+  background: rgba(139,47,255,.15);
+  border-color: rgba(139,47,255,.5);
+  color: var(--white);
+  box-shadow: 0 0 16px rgba(139,47,255,.15);
 }
 
-/* Панели модулей */
-.module-panel { display: none; }
-.module-panel.active { display: block; animation: fadeUp .3s ease; }
 
+/* ─────────────────────────────────────────────────────────────
+   3. ПАНЕЛИ МОДУЛЕЙ — контейнер уроков каждого модуля
+   · Только одна панель видна (JS переключает класс .active)
+   · Появление сопровождается анимацией fadeUp
+───────────────────────────────────────────────────────────── */
+
+/* Панель скрыта по умолчанию */
+.module-panel { display: none; }
+
+/* Активная панель — появляется с анимацией */
+.module-panel.active {
+  display: block;
+  animation: fadeUp .3s ease;
+}
+
+/* Анимация появления снизу вверх */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Шапка модуля: иконка + название/описание + мета-теги */
 .module-header {
-  display: flex; align-items: center; gap: 1rem;
-  margin-bottom: 1.5rem; padding: 1.2rem 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.2rem 1.6rem;
   background: linear-gradient(135deg, rgba(139,47,255,.08), rgba(6,230,255,.04));
-  border: 1px solid rgba(139,47,255,.18); border-radius: 16px;
+  border: 1px solid rgba(139,47,255,.18);
+  border-radius: 16px;
   backdrop-filter: blur(14px);
 }
+
+/* Эмодзи-иконка слева в шапке */
 .module-icon { font-size: 2rem; }
+
+/* Название модуля */
 .module-header-info h3 {
-  font-family: 'Orbitron', monospace; font-size: .95rem; font-weight: 700;
-  color: var(--white); margin-bottom: .2rem;
-}
-.module-header-info p { font-size: .82rem; color: var(--text); opacity: .6; }
-.module-meta { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: .3rem; }
-.module-tag {
-  font-family: 'Fira Code', monospace; font-size: .68rem; color: var(--cyan);
-  background: rgba(6,230,255,.07); border: 1px solid rgba(6,230,255,.18);
-  border-radius: 100px; padding: .2rem .7rem;
+  font-family: 'Orbitron', monospace;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: .2rem;
 }
 
-/* Карточки уроков */
+/* Описание модуля */
+.module-header-info p {
+  font-size: .82rem;
+  color: var(--text);
+  opacity: .6;
+}
+
+/* Мета-теги справа: "Уроки 1–4", "Месяц 1" */
+.module-meta {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .3rem;
+}
+
+/* Один мета-тег */
+.module-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: .68rem;
+  color: var(--cyan);
+  background: rgba(6,230,255,.07);
+  border: 1px solid rgba(6,230,255,.18);
+  border-radius: 100px;
+  padding: .2rem .7rem;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. КАРТОЧКИ УРОКОВ — основной контент модуля
+   · Glass-карточки с hover-эффектом (сдвиг вправо)
+   · Квадратик с номером урока слева
+   · Раскрывающиеся проекты по клику
+───────────────────────────────────────────────────────────── */
+
+/* Вертикальный список карточек */
 .lessons-grid { display: grid; gap: .85rem; }
 
+/* Карточка одного урока */
 .lesson-card {
-  background: var(--glass-bg); border: 1px solid var(--glass-border);
-  border-radius: 14px; padding: 1.4rem 1.5rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 1.4rem 1.5rem;
   backdrop-filter: blur(14px);
   transition: border-color .2s, transform .2s;
 }
-.lesson-card:hover { border-color: rgba(139,47,255,.3); transform: translateX(4px); }
 
-.lesson-top { display: flex; align-items: flex-start; gap: .9rem; margin-bottom: .8rem; }
+/* При наведении карточка сдвигается вправо */
+.lesson-card:hover {
+  border-color: rgba(139,47,255,.3);
+  transform: translateX(4px);
+}
 
+/* Верхняя строка: номер + заголовок + описание */
+.lesson-top {
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+  margin-bottom: .8rem;
+}
+
+/* Квадратик с номером урока: 01, 02 … */
 .lesson-num {
-  flex-shrink: 0; width: 36px; height: 36px;
-  background: rgba(139,47,255,.18); border: 1px solid rgba(139,47,255,.3);
-  border-radius: 10px; display: flex; align-items: center; justify-content: center;
-  font-family: 'Orbitron', monospace; font-size: .68rem; font-weight: 700; color: var(--aurora);
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  background: rgba(139,47,255,.18);
+  border: 1px solid rgba(139,47,255,.3);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--aurora);
 }
-.lesson-title { font-size: .95rem; font-weight: 700; color: var(--white); margin-bottom: .2rem; }
-.lesson-what  { font-size: .82rem; color: var(--text); opacity: .62; line-height: 1.55; }
 
-/* Проекты внутри урока */
+/* Название урока */
+.lesson-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: .2rem;
+}
+
+/* Краткое описание темы урока */
+.lesson-what {
+  font-size: .82rem;
+  color: var(--text);
+  opacity: .62;
+  line-height: 1.55;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   5. ПРОЕКТЫ ВНУТРИ УРОКА — раскрывающийся список
+   · Кнопка "Проекты на выбор" со стрелкой
+   · ЛЕГКО (зелёный) / СРЕДНЕ (золотой) / СЛОЖНО (розовый)
+───────────────────────────────────────────────────────────── */
+
+/* Кнопка раскрытия списка проектов */
 .projects-toggle {
-  display: inline-flex; align-items: center; gap: .4rem; margin-top: .7rem;
-  font-family: 'Fira Code', monospace; font-size: .68rem;
-  color: var(--green); cursor: pointer; opacity: .7;
-  transition: opacity .2s; user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .7rem;
+  font-family: 'Fira Code', monospace;
+  font-size: .68rem;
+  color: var(--green);
+  cursor: pointer;
+  opacity: .7;
+  transition: opacity .2s;
+  user-select: none;
 }
-.projects-toggle:hover { opacity: 1; }
-.projects-toggle .arr { display: inline-block; transition: transform .2s; }
 
+.projects-toggle:hover { opacity: 1; }
+
+/* Стрелка — поворачивается на 90° при открытии */
+.projects-toggle .arr {
+  display: inline-block;
+  transition: transform .2s;
+}
+
+/* Список проектов — скрыт по умолчанию */
 .projects-list {
   display: none;
   margin-top: .8rem;
   padding-top: .8rem;
   border-top: 1px solid rgba(255,255,255,.06);
 }
+
+/* Открытый список — появляется с анимацией */
 .projects-list.open {
   display: block;
-  animation: fadeUp .2s ease; }
+  animation: fadeUp .2s ease;
+}
 
+/* Один проект в списке */
 .project-item {
   display: flex;
   align-items: flex-start;
@@ -403,42 +940,52 @@ nav {
   border-radius: 10px;
   margin-bottom: .4rem;
 }
+
 .project-item:last-child { margin-bottom: 0; }
 
-.proj-easy   {
-  background: rgba(57,255,20,.05);
-  border: 1px solid rgba(57,255,20,.15); }
+/* Цветовые темы по уровню сложности */
+.proj-easy   { background: rgba(57,255,20,.05);  border: 1px solid rgba(57,255,20,.15);  }
+.proj-medium { background: rgba(255,215,0,.05);  border: 1px solid rgba(255,215,0,.15);  }
+.proj-hard   { background: rgba(255,45,138,.05); border: 1px solid rgba(255,45,138,.15); }
 
-.proj-medium {
-  background: rgba(255,215,0,.05);
-  border: 1px solid rgba(255,215,0,.15); }
-
-.proj-hard   {
-  background: rgba(255,45,138,.05);
-  border: 1px solid rgba(255,45,138,.15); }
-
+/* Бейдж уровня сложности */
 .proj-badge {
-  flex-shrink: 0; font-size: .56rem; font-weight: 700; letter-spacing: .08em;
-  padding: .18rem .55rem; border-radius: 100px; margin-top: .2rem;
+  flex-shrink: 0;
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: .18rem .55rem;
+  border-radius: 100px;
+  margin-top: .2rem;
 }
-.proj-easy   .proj-badge { background: rgba(57,255,20,.15);  color: var(--green); }
-.proj-medium .proj-badge { background: rgba(255,215,0,.15);  color: var(--gold); }
-.proj-hard   .proj-badge { background: rgba(255,45,138,.15); color: var(--pink); }
 
+/* Цвет бейджа зависит от уровня */
+.proj-easy   .proj-badge { background: rgba(57,255,20,.15);  color: var(--green); }
+.proj-medium .proj-badge { background: rgba(255,215,0,.15);  color: var(--gold);  }
+.proj-hard   .proj-badge { background: rgba(255,45,138,.15); color: var(--pink);  }
+
+/* Текст описания проекта */
 .proj-text {
   font-size: .82rem;
   color: var(--text);
   opacity: .78;
-  line-height: 1.45; }
+  line-height: 1.45;
+}
 
 
 /* ═══════════════════════════════════════════════════════════════
    РЕЗУЛЬТАТЫ КУРСА
+   Авто-адаптивная сетка карточек с иконками
 ═══════════════════════════════════════════════════════════════ */
+
+/* Сетка: автоматически подбирает количество колонок */
 .gets-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .85rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: .85rem;
 }
 
+/* Карточка одного результата */
 .get-card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -450,177 +997,343 @@ nav {
   backdrop-filter: blur(12px);
   transition: border-color .2s;
 }
-.get-card:hover {
-  border-color: rgba(139,47,255,.28); }
+
+.get-card:hover { border-color: rgba(139,47,255,.28); }
+
+/* Иконка карточки */
 .get-icon {
   font-size: 1.5rem;
   flex-shrink: 0;
-  margin-top: .1rem; }
+  margin-top: .1rem;
+}
+
+/* Текстовая часть карточки */
 .get-text {
   font-size: .85rem;
   line-height: 1.55;
   color: var(--text);
-  opacity: .8; }
+  opacity: .8;
+}
+
+/* Жирный заголовок карточки */
 .get-text strong {
   color: var(--white);
   display: block;
   margin-bottom: .1rem;
-  font-size: .87rem; }
+  font-size: .87rem;
+}
 
 
 /* ═══════════════════════════════════════════════════════════════
-   FAQ
+   FAQ — часто задаваемые вопросы
+   Аккордеон: клик по вопросу открывает ответ через max-height
 ═══════════════════════════════════════════════════════════════ */
+
+/* Вертикальный список вопросов */
 .faq-list { display: flex; flex-direction: column; gap: .6rem; }
 
+/* Один элемент FAQ */
 .faq-item {
-  background: var(--glass-bg); border: 1px solid var(--glass-border);
-  border-radius: 12px; overflow: hidden; backdrop-filter: blur(12px);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
   transition: border-color .2s;
 }
+
 .faq-item:hover { border-color: rgba(139,47,255,.25); }
 
+/* Строка вопроса — кликабельна */
 .faq-q {
   padding: 1rem 1.3rem;
-  display: flex; align-items: center; justify-content: space-between;
-  cursor: pointer; font-size: .9rem; font-weight: 600; color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--white);
   transition: background .2s;
 }
-.faq-q:hover { background: rgba(139,47,255,.05); }
-.faq-q .faq-arrow { font-size: 1rem; color: var(--muted); transition: transform .3s; }
 
-.faq-a {
-  max-height: 0; overflow: hidden;
-  font-size: .84rem; line-height: 1.72; color: var(--text); opacity: .75;
-  transition: max-height .32s ease, padding .32s ease; padding: 0 1.3rem;
+.faq-q:hover { background: rgba(139,47,255,.05); }
+
+/* Стрелка справа от вопроса */
+.faq-q .faq-arrow {
+  font-size: 1rem;
+  color: var(--muted);
+  transition: transform .3s;
 }
+
+/* Ответ скрыт через max-height — плавно раскрывается */
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  font-size: .84rem;
+  line-height: 1.72;
+  color: var(--text);
+  opacity: .75;
+  transition: max-height .32s ease, padding .32s ease;
+  padding: 0 1.3rem;
+}
+
+/* Открытое состояние: ответ раскрывается */
 .faq-item.open .faq-a     { max-height: 300px; padding: 0 1.3rem 1.1rem; }
 .faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--cyan); }
 
 
 /* ═══════════════════════════════════════════════════════════════
    CTA — призыв к действию
+   Центрированная секция с заголовком и двумя кнопками
 ═══════════════════════════════════════════════════════════════ */
-.cta-section { position: relative; z-index: 1; padding: 5rem 1.5rem; text-align: center; }
-.cta-inner   { max-width: 500px; margin: 0 auto; }
 
+.cta-section {
+  position: relative;
+  z-index: 1;
+  padding: 5rem 1.5rem;
+  text-align: center;
+}
+
+/* Внутренний контейнер ограниченной ширины */
+.cta-inner { max-width: 500px; margin: 0 auto; }
+
+/* Заголовок секции CTA */
 .cta-title {
   font-family: 'Orbitron', monospace;
-  font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 900;
-  color: var(--white); margin-bottom: .9rem; line-height: 1.2;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  font-weight: 900;
+  color: var(--white);
+  margin-bottom: .9rem;
+  line-height: 1.2;
 }
+
+/* Акцентное слово "бесплатно" — градиентный текст */
 .cta-title .g {
   background: linear-gradient(135deg, var(--cyan), var(--aurora));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.cta-note { font-size: .88rem; color: var(--text); opacity: .6; margin-bottom: 2rem; line-height: 1.7; }
 
-.cta-btns { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; }
+/* Подпись под заголовком */
+.cta-note {
+  font-size: .88rem;
+  color: var(--text);
+  opacity: .6;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
 
+/* Контейнер двух кнопок */
+.cta-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  justify-content: center;
+}
+
+/* Основная кнопка — фиолетовая */
 .btn-main {
-  display: inline-flex; align-items: center; gap: .6rem;
-  background: rgba(139,47,255,.1); border: 1.5px solid rgba(139,47,255,.45);
-  border-radius: 100px; padding: .95rem 2.2rem;
-  font-family: 'Orbitron', monospace; font-size: .82rem; font-weight: 700; letter-spacing: .05em;
-  color: var(--white); cursor: pointer; text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: rgba(139,47,255,.1);
+  border: 1.5px solid rgba(139,47,255,.45);
+  border-radius: 100px;
+  padding: .95rem 2.2rem;
+  font-family: 'Orbitron', monospace;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: var(--white);
+  cursor: pointer;
+  text-decoration: none;
   backdrop-filter: blur(16px);
   box-shadow: 0 0 24px rgba(139,47,255,.18), inset 0 1px 0 rgba(255,255,255,.08);
   transition: background .25s, border-color .25s, box-shadow .25s, transform .2s;
 }
+
 .btn-main:hover {
-  background: rgba(139,47,255,.2); border-color: rgba(139,47,255,.7);
-  box-shadow: 0 0 40px rgba(139,47,255,.3); transform: translateY(-2px);
+  background: rgba(139,47,255,.2);
+  border-color: rgba(139,47,255,.7);
+  box-shadow: 0 0 40px rgba(139,47,255,.3);
+  transform: translateY(-2px);
 }
 
+/* Вторичная кнопка — голубая */
 .btn-sec {
-  display: inline-flex; align-items: center; gap: .6rem;
-  background: rgba(6,230,255,.05); border: 1px solid rgba(6,230,255,.25);
-  border-radius: 100px; padding: .95rem 2.2rem;
-  font-family: 'Orbitron', monospace; font-size: .82rem; font-weight: 700; letter-spacing: .05em;
-  color: var(--cyan); cursor: pointer; text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: rgba(6,230,255,.05);
+  border: 1px solid rgba(6,230,255,.25);
+  border-radius: 100px;
+  padding: .95rem 2.2rem;
+  font-family: 'Orbitron', monospace;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: var(--cyan);
+  cursor: pointer;
+  text-decoration: none;
   backdrop-filter: blur(16px);
   transition: background .25s, border-color .25s, transform .2s;
 }
-.btn-sec:hover { background: rgba(6,230,255,.1); border-color: rgba(6,230,255,.5); transform: translateY(-2px); }
+
+.btn-sec:hover {
+  background: rgba(6,230,255,.1);
+  border-color: rgba(6,230,255,.5);
+  transform: translateY(-2px);
+}
 
 
 /* ═══════════════════════════════════════════════════════════════
    ПОДВАЛ
 ═══════════════════════════════════════════════════════════════ */
+
 footer {
-  position: relative; z-index: 1; padding: 1.8rem 1.5rem;
-  text-align: center; border-top: 1px solid rgba(139,47,255,.1);
-  font-size: .75rem; color: var(--muted); letter-spacing: .07em;
+  position: relative;
+  z-index: 1;
+  padding: 1.8rem 1.5rem;
+  text-align: center;
+  border-top: 1px solid rgba(139,47,255,.1);
+  font-size: .75rem;
+  color: var(--muted);
+  letter-spacing: .07em;
 }
+
+/* Логотип в подвале — градиентный текст */
 footer .logo {
-  font-family: 'Orbitron', monospace; font-weight: 700;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
   background: linear-gradient(90deg, var(--cyan), var(--violet));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 
 /* ═══════════════════════════════════════════════════════════════
    МОДАЛЬНОЕ ОКНО — контакты
+   Открывается по клику на все кнопки "Записаться"
 ═══════════════════════════════════════════════════════════════ */
+
+/* Оверлей — затемняет фон страницы */
 #contactModal {
-  display: none; position: fixed; inset: 0; z-index: 200;
-  align-items: center; justify-content: center;
-  background: rgba(2,0,8,.82); backdrop-filter: blur(14px);
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2,0,8,.82);
+  backdrop-filter: blur(14px);
 }
+
+/* Показываем оверлей */
 #contactModal.open { display: flex; }
 
+/* Карточка модального окна */
 .modal-box {
   background: linear-gradient(135deg, rgba(13,0,48,.96), rgba(6,0,26,.96));
-  border: 1px solid rgba(139,47,255,.28); border-radius: 22px;
-  padding: 2.2rem; max-width: 420px; width: 90%; text-align: center;
-  backdrop-filter: blur(28px); box-shadow: 0 0 50px rgba(139,47,255,.18);
-  animation: modalIn .28s ease; position: relative;
+  border: 1px solid rgba(139,47,255,.28);
+  border-radius: 22px;
+  padding: 2.2rem;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  backdrop-filter: blur(28px);
+  box-shadow: 0 0 50px rgba(139,47,255,.18);
+  animation: modalIn .28s ease;
+  position: relative;
 }
+
+/* Анимация появления окна */
 @keyframes modalIn {
   from { opacity: 0; transform: translateY(16px) scale(.97); }
   to   { opacity: 1; transform: none; }
 }
 
+/* Кнопка закрытия — крестик в правом верхнем углу */
 .modal-close {
-  position: absolute; top: .9rem; right: 1.1rem;
-  font-size: 1.2rem; color: var(--muted); cursor: pointer;
-  background: none; border: none; transition: color .2s;
+  position: absolute;
+  top: .9rem;
+  right: 1.1rem;
+  font-size: 1.2rem;
+  color: var(--muted);
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color .2s;
 }
+
 .modal-close:hover { color: var(--white); }
 
+/* Заголовок модального окна */
 .modal-title {
-  font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 700;
-  color: var(--white); margin-bottom: .4rem; margin-top: .3rem;
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: .4rem;
+  margin-top: .3rem;
 }
-.modal-note { font-size: .83rem; color: var(--text); opacity: .65; margin-bottom: 1.6rem; line-height: 1.6; }
 
+/* Подпись под заголовком */
+.modal-note {
+  font-size: .83rem;
+  color: var(--text);
+  opacity: .65;
+  margin-bottom: 1.6rem;
+  line-height: 1.6;
+}
+
+/* Список ссылок на соцсети */
 .slinks { display: flex; flex-direction: column; gap: .6rem; }
+
+/* Ссылка на одну соцсеть */
 .slink {
-  display: flex; align-items: center; gap: .9rem;
-  background: var(--glass-bg); border: 1px solid var(--glass-border);
-  border-radius: 12px; padding: .8rem 1.1rem;
-  text-decoration: none; color: var(--white); backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: .8rem 1.1rem;
+  text-decoration: none;
+  color: var(--white);
+  backdrop-filter: blur(8px);
   transition: border-color .2s, background .2s;
 }
-.slink:hover { border-color: rgba(6,230,255,.3); background: rgba(6,230,255,.05); }
+
+.slink:hover {
+  border-color: rgba(6,230,255,.3);
+  background: rgba(6,230,255,.05);
+}
+
 .slink-icon   { font-size: 1.3rem; }
 .slink-name   { font-size: .8rem; font-weight: 700; color: var(--white); }
 .slink-handle { font-size: .72rem; color: var(--muted); margin-top: .05rem; }
 
 
 /* ═══════════════════════════════════════════════════════════════
-   АДАПТИВ
+   АДАПТИВ — мобильные правки
 ═══════════════════════════════════════════════════════════════ */
+
 @media (max-width: 600px) {
+  /* Шапка модуля: переходим в колонку, мета-теги — в ряд */
   .module-header { flex-wrap: wrap; }
   .module-meta   { margin-left: 0; flex-direction: row; margin-top: .5rem; }
-  .about-strip   { flex-direction: column; align-items: flex-start; }
+
+  /* Полоска "О курсе" — вертикально на маленьких экранах */
+  .about-strip { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
 <body>
 
-<!-- Фон -->
+<!-- ══════════ ФОН ══════════ -->
 <div class="space-bg"></div>
 <canvas id="starfield"></canvas>
 <canvas id="fallingStars"></canvas>
@@ -639,7 +1352,7 @@ footer .logo {
   <a href="#" class="nav-cta" id="navCta">Записаться</a>
 </nav>
 
-<!-- ══════════ HERO ══════════ -->
+<!-- ══════════ HERO — первый экран ══════════ -->
 <section class="hero">
   <div class="hero-eyebrow">
     <span class="eyebrow-line"></span>
@@ -661,7 +1374,6 @@ footer .logo {
     <span class="pill">16 уроков · 4 месяца</span>
     <span class="pill">3 уровня сложности</span>
     <span class="pill">Первый урок бесплатно</span>
-
   </div>
   <a href="#" class="hero-btn" id="heroCta">Записаться на пробный урок</a>
 </section>
@@ -673,7 +1385,6 @@ footer .logo {
   <div class="section-inner">
     <div class="section-tag">// Об авторе курса</div>
     <div class="about-strip">
-<!--      <div class="about-avatar">об авторе</div>-->
       <div class="about-text">
         <p>
           Авторский курс — каждый урок провожу лично.
@@ -696,44 +1407,71 @@ footer .logo {
 
 <div class="glow-divider"></div>
 
-<!-- ══════════ ПРОГРАММА ══════════ -->
+<!-- ══════════ ПРОГРАММА КУРСА ══════════ -->
 <section class="section" id="program">
+
+  <!-- Пробный урок — вынесен ВНЕ .section-inner, занимает полную ширину секции -->
+  <div class="intro-lesson">
+
+    <div class="intro-lesson-content">
+      <!-- Иконка слева -->
+      <!-- <div class="intro-lesson-icon">💻</div>-->
+
+      <!-- Основной текст: заголовок, описание, проект -->
+      <div class="intro-lesson-info">
+        <h3 class="intro-lesson-title">Бесплатный пробный урок: первая страница за 30 минут</h3>
+        <p class="intro-lesson-desc">Работаем в онлайн-редакторе. Пишем настоящий HTML-код: заголовок, текст, картинка. Через 30 минут у ребёнка готовая страница которую можно показать друзьям.</p>
+
+        <!-- Строка с описанием итогового проекта -->
+        <div class="intro-lesson-project">
+          <span class="proj-badge">ПРОЕКТ</span>
+          <span>Страница «Привет, это я!» — заголовок, картинка, 3 факта о себе</span>
+        </div>
+      </div>
+
+      <!-- CTA-кнопка: открывает модальное окно с контактами -->
+      <a href="#" class="intro-lesson-btn" onclick="event.preventDefault(); openModal();">Записаться →</a>
+    </div>
+  </div>
+
+  <!-- Табы и панели модулей — карточки уроков рендерятся через JS -->
   <div class="section-inner">
     <div class="section-tag">// Программа курса</div>
     <h2 class="section-title">4 модуля · 16 уроков</h2>
     <p class="section-desc">На каждом уроке — три варианта проекта на выбор: простой, средний и сложный.</p>
 
-    <!-- Табы -->
+    <!-- Кнопки-табы: data-tab совпадает с id панели -->
     <div class="tabs">
-      <button class="tab-btn active" data-tab="m1">🦴 Модуль 1</button>
+      <button class="tab-btn active" data-tab="m1">⚙️ Модуль 1</button>
       <button class="tab-btn"        data-tab="m2">🎨 Модуль 2</button>
-      <button class="tab-btn"        data-tab="m3">📐 Модуль 3</button>
-      <button class="tab-btn"        data-tab="m4">🌀 Модуль 4</button>
+      <button class="tab-btn"        data-tab="m3">✨ Модуль 3</button>
+      <button class="tab-btn"        data-tab="m4">🚀Модуль 4</button>
     </div>
 
-    <!-- Модуль 1 -->
+    <!-- Модуль 1: HTML — основы -->
     <div class="module-panel active" id="m1">
       <div class="module-header">
-        <div class="module-icon">🦴</div>
+        <div class="module-icon">⚙️</div>
         <div class="module-header-info">
-          <h3>Скелет интернета — основы HTML</h3>
-          <p>Как устроены сайты изнутри. Первые страницы, теги, структура.</p>
+          <h3>Строим страницу с HTML</h3>
+          <p>Учимся строить страницы с HTML — заголовки, тексты, картинки, ссылки, смотрим как устроены сайты изнутри</p>
         </div>
         <div class="module-meta">
           <div class="module-tag">Уроки 1–4</div>
           <div class="module-tag">Месяц 1</div>
         </div>
       </div>
+      <!-- Карточки уроков генерируются через JS (renderLessons) -->
       <div class="lessons-grid" id="lessons-m1"></div>
     </div>
 
-    <!-- Модуль 2 -->
+    <!-- Модуль 2: CSS — стили -->
     <div class="module-panel" id="m2">
       <div class="module-header">
         <div class="module-icon">🎨</div>
         <div class="module-header-info">
-          <h3>Дизайнер из будущего — стили CSS</h3>
-          <p>Цвета, шрифты, кнопки, тени. Сайт начинает выглядеть как настоящий.</p>
+          <h3>Украшаем и раскрашиваем с помощью CSS</h3>
+          <p>Добавляем CSS стилей. Цвета, шрифты, кнопки, тени. Сайт начинает выглядеть как настоящий.</p>
         </div>
         <div class="module-meta">
           <div class="module-tag">Уроки 5–8</div>
@@ -743,13 +1481,13 @@ footer .logo {
       <div class="lessons-grid" id="lessons-m2"></div>
     </div>
 
-    <!-- Модуль 3 -->
+    <!-- Модуль 3: Flexbox — раскладка -->
     <div class="module-panel" id="m3">
       <div class="module-header">
-        <div class="module-icon">📐</div>
+        <div class="module-icon">✨</div>
         <div class="module-header-info">
-          <h3>Архитектор пространства — Flexbox</h3>
-          <p>Управляем расположением блоков. Галереи, навигация, полноценные макеты.</p>
+          <h3>Расставляем и оживляем</h3>
+          <p>Flexbox волшебная расстановка + эффекты — элементы встают куда нужно и реагируют на клик.</p>
         </div>
         <div class="module-meta">
           <div class="module-tag">Уроки 9–12</div>
@@ -759,13 +1497,13 @@ footer .logo {
       <div class="lessons-grid" id="lessons-m3"></div>
     </div>
 
-    <!-- Модуль 4 -->
+    <!-- Модуль 4: Анимации + публикация -->
     <div class="module-panel" id="m4">
       <div class="module-header">
-        <div class="module-icon">🌀</div>
+        <div class="module-icon">🌍</div>
         <div class="module-header-info">
-          <h3>Живой код — анимации и запуск</h3>
-          <p>Hover-эффекты, CSS-анимации, адаптивность. Публикация сайта с реальным URL.</p>
+          <h3>Финальный проект — свой сайт<</h3>
+          <p>Продумываем идею сайта, создаем и публикуем в интернет с реальной URL-ссылкой.</p>
         </div>
         <div class="module-meta">
           <div class="module-tag">Уроки 13–16</div>
@@ -805,10 +1543,6 @@ footer .logo {
     <div class="section-tag">// Вопросы</div>
     <h2 class="section-title">Часто спрашивают</h2>
     <div class="faq-list" style="max-width:680px;">
-<!--      <div class="faq-item">-->
-<!--        <div class="faq-q">Это живые уроки или записанные видео? <span class="faq-arrow">▾</span></div>-->
-<!--        <div class="faq-a">Только живые уроки один на один. Провожу каждое занятие лично — ребёнок видит меня в видеозвонке, я вижу его экран и сразу отвечаю на вопросы.</div>-->
-<!--      </div>-->
       <div class="faq-item">
         <div class="faq-q">С какого возраста подходит курс? <span class="faq-arrow">▾</span></div>
         <div class="faq-a">От 9 лет. Для маленький — объясняю на простых визуальных примерах, идем в своем темпе. Дети 11–14 лет работают более самостоятельно и выбирают более сложные проекты.</div>
@@ -831,10 +1565,10 @@ footer .logo {
 
 <div class="glow-divider"></div>
 
-<!-- ══════════ CTA ══════════ -->
+<!-- ══════════ CTA — призыв к действию ══════════ -->
 <section class="cta-section">
   <div class="cta-inner">
-    <h2 class="cta-title">Первый урок — <span class="g">бесплатно</span></h2>
+    <h2 class="cta-title">Пробный урок — <span class="g">бесплатно</span></h2>
     <p class="cta-note">Познакомимся, разберёмся в уровне ребёнка и напишем первый HTML-код прямо на занятии.</p>
     <div class="cta-btns">
       <a href="#" class="btn-main" id="ctaCta">Написать и записаться</a>
@@ -848,7 +1582,7 @@ footer .logo {
   <span class="logo">WEBCRAFT</span> &nbsp;·&nbsp; HTML & CSS для детей &nbsp;·&nbsp; Авторский курс &nbsp;·&nbsp;Программирование для детей
 </footer>
 
-<!-- ══════════ МОДАЛЬНОЕ ОКНО ══════════ -->
+<!-- ══════════ МОДАЛЬНОЕ ОКНО — контакты ══════════ -->
 <div id="contactModal">
   <div class="modal-box">
     <button class="modal-close" id="modalClose">✕</button>
@@ -861,15 +1595,6 @@ footer .logo {
         <span class="slink-icon">✈️</span>
         <div><div class="slink-name">Telegram</div><div class="slink-handle">@samadhi404</div></div>
       </a>
-<!--      <a href="https://wa.me/7XXXXXXXXXX" target="_blank" class="slink">-->
-<!--        <span class="slink-icon">💬</span>-->
-<!--        <div><div class="slink-name">WhatsApp</div><div class="slink-handle">+7 (XXX) XXX-XX-XX</div></div>-->
-<!--      </a>-->
-<!--      <a href="https://vk.com/ВАШ_ЛОГИН" target="_blank" class="slink">-->
-<!--        <span class="slink-icon">🔵</span>-->
-<!--        <div><div class="slink-name">ВКонтакте</div><div class="slink-handle">vk.com/ВАШ_ЛОГИН</div></div>-->
-<!--      </a>-->
-
     </div>
   </div>
 </div>
@@ -877,20 +1602,24 @@ footer .logo {
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   СТАТИЧНЫЕ ЗВЁЗДЫ НА CANVAS (мерцающие точки на фоне)
+   СТАТИЧНЫЕ ЗВЁЗДЫ НА CANVAS
+   Мерцающие точки разных цветов на фоне страницы
 ═══════════════════════════════════════════════════════════════ */
 (function initStarfield() {
   const canvas = document.getElementById('starfield');
   const ctx    = canvas.getContext('2d');
   let   stars  = [];
 
+  /* Палитра цветов звёзд */
   const STAR_COLORS = ['255,255,255', '6,230,255', '168,85,247', '255,45,138', '0,255,213'];
 
+  /* Подгоняем canvas под размер окна */
   function resize() {
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
   }
 
+  /* Создаём массив звёзд — плотность зависит от площади экрана */
   function createStars() {
     stars = [];
     const count = Math.floor(canvas.width * canvas.height / 2800);
@@ -899,29 +1628,30 @@ footer .logo {
       stars.push({
         x:     Math.random() * canvas.width,
         y:     Math.random() * canvas.height,
-        r:     Math.random() * 1.4 + 0.2,
-        alpha: Math.random() * 0.65 + 0.2,
-        phase: Math.random() * Math.PI * 2,
-        speed: Math.random() * 0.0007 + 0.0002,
+        r:     Math.random() * 1.4 + 0.2,           /* радиус 0.2–1.6px */
+        alpha: Math.random() * 0.65 + 0.2,           /* начальная яркость */
+        phase: Math.random() * Math.PI * 2,           /* сдвиг фазы мерцания */
+        speed: Math.random() * 0.0007 + 0.0002,       /* скорость мерцания */
         color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)]
       });
     }
   }
 
+  /* Рисуем все звёзды на каждом кадре */
   function drawStars(time) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (const star of stars) {
-      // Мерцание через синус
+      /* Мерцание через синус — яркость колеблется плавно */
       const a = star.alpha * (0.5 + 0.5 * Math.sin(star.phase + time * star.speed * 60));
 
-      // Точка
+      /* Точка звезды */
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${star.color},${a})`;
       ctx.fill();
 
-      // Ореол для крупных звёзд
+      /* Ореол — только для крупных звёзд (r > 1.1) */
       if (star.r > 1.1) {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.r * 3.5, 0, Math.PI * 2);
@@ -931,6 +1661,7 @@ footer .logo {
     }
   }
 
+  /* Анимационный цикл */
   let time = 0;
   function loop() {
     time += 0.016;
@@ -946,25 +1677,26 @@ footer .logo {
 
 
 /* ═══════════════════════════════════════════════════════════════
-   ПАДАЮЩИЕ ЗВЁЗДЫ — Canvas, строго вертикально вниз
+   ПАДАЮЩИЕ ЗВЁЗДЫ — Canvas
    Каждая звезда: яркая точка + хвост-градиент + мягкое свечение
+   Движутся строго вертикально вниз
 ═══════════════════════════════════════════════════════════════ */
 (function initFallingStars() {
   const canvas = document.getElementById('fallingStars');
   const ctx    = canvas.getContext('2d');
 
-  // Палитра в тон сайту: [r, g, b]
+  /* Палитра в тон сайту: [r, g, b] */
   const PALETTE = [
-    [255, 255, 255],   // белый
-    [  6, 230, 255],   // cyan
-    [168,  85, 247],   // aurora/violet
-    [255,  45, 138],   // pink
-    [  0, 255, 213],   // teal
-    [255, 215,   0],   // gold
-    [139,  47, 255],   // deep violet
+    [255, 255, 255],   /* белый */
+    [  6, 230, 255],   /* cyan */
+    [168,  85, 247],   /* aurora/violet */
+    [255,  45, 138],   /* pink */
+    [  0, 255, 213],   /* teal */
+    [255, 215,   0],   /* gold */
+    [139,  47, 255],   /* deep violet */
   ];
 
-  const COUNT = 35;  // кол-во звёзд одновременно на экране
+  const COUNT = 35;  /* количество звёзд одновременно на экране */
   let W, H;
   let meteors = [];
 
@@ -973,31 +1705,33 @@ footer .logo {
     H = canvas.height = window.innerHeight;
   }
 
-  // Создать одну звезду — сразу в случайной точке по высоте (чтобы старт не был синхронным)
+  /* Создаём одну падающую звезду */
   function createMeteor(randomY = false) {
     const [r, g, b] = PALETTE[Math.floor(Math.random() * PALETTE.length)];
     return {
-      x:       Math.random() * W,                         // фиксированная горизонталь
-      y:       randomY ? Math.random() * H : -20,         // старт сверху или рандом
-      r:       Math.random() * 1.8 + 0.8,                 // радиус точки: 0.8–2.6px
-      speed:   Math.random() * 1.8 + 0.6,                 // px за кадр: 0.6–2.4
-      tailLen: Math.random() * 18 + 6,                    // длина хвоста: 6–24px (короткий, натуральный)
-      alpha:   Math.random() * 0.5 + 0.5,                 // яркость 0.5–1.0
+      x:       Math.random() * W,                         /* фиксированная горизонталь */
+      y:       randomY ? Math.random() * H : -20,         /* старт сверху или рандомно */
+      r:       Math.random() * 1.8 + 0.8,                 /* радиус точки: 0.8–2.6px */
+      speed:   Math.random() * 1.8 + 0.6,                 /* скорость: 0.6–2.4px за кадр */
+      tailLen: Math.random() * 18 + 6,                    /* длина хвоста: 6–24px */
+      alpha:   Math.random() * 0.5 + 0.5,                 /* яркость: 0.5–1.0 */
       r_:r, g_:g, b_:b,
     };
   }
 
+  /* Заполняем экран звёздами в начале — разбросаны по высоте */
   function initMeteors() {
     meteors = [];
     for (let i = 0; i < COUNT; i++) {
-      meteors.push(createMeteor(true)); // первый кадр — разбросаны по всему экрану
+      meteors.push(createMeteor(true));
     }
   }
 
+  /* Рисуем одну звезду: хвост + точка + свечение */
   function drawMeteor(m) {
     const { x, y, r, tailLen, alpha, r_, g_, b_ } = m;
 
-    // ── Хвост — вертикальный градиент снизу вверх (от точки к прозрачному) ──
+    /* Хвост — вертикальный градиент (от точки вверх к прозрачному) */
     const grad = ctx.createLinearGradient(x, y, x, y - tailLen);
     grad.addColorStop(0,   `rgba(${r_},${g_},${b_},${alpha * 0.9})`);
     grad.addColorStop(0.4, `rgba(${r_},${g_},${b_},${alpha * 0.3})`);
@@ -1011,13 +1745,13 @@ footer .logo {
     ctx.lineCap     = 'round';
     ctx.stroke();
 
-    // ── Ядро — яркая точка ──
+    /* Яркая точка (ядро) */
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(${r_},${g_},${b_},${alpha})`;
     ctx.fill();
 
-    // ── Свечение вокруг точки (большой мягкий круг) ──
+    /* Мягкое свечение вокруг точки */
     const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 5);
     glow.addColorStop(0,   `rgba(${r_},${g_},${b_},${alpha * 0.4})`);
     glow.addColorStop(1,   `rgba(${r_},${g_},${b_},0)`);
@@ -1027,22 +1761,22 @@ footer .logo {
     ctx.fill();
   }
 
+  /* Основной цикл: двигаем звёзды вниз, перезапускаем вышедшие за экран */
   function tick() {
     ctx.clearRect(0, 0, W, H);
 
     for (let i = 0; i < meteors.length; i++) {
       const m = meteors[i];
 
-      // Мерцание — лёгкое колебание прозрачности
+      /* Лёгкое случайное мерцание */
       m.alpha += (Math.random() - 0.5) * 0.04;
       m.alpha  = Math.max(0.3, Math.min(1.0, m.alpha));
 
       drawMeteor(m);
 
-      // Двигаем вниз
-      m.y += m.speed;
+      m.y += m.speed; /* движение вниз */
 
-      // Вышла за нижний край — перезапускаем сверху
+      /* Вышла за нижний край — перезапускаем сверху */
       if (m.y - m.tailLen > H) {
         meteors[i] = createMeteor(false);
       }
@@ -1060,26 +1794,12 @@ footer .logo {
 
 /* ═══════════════════════════════════════════════════════════════
    ДАННЫЕ КУРСА
+   Объект MODULES содержит все модули и уроки.
+   Ключи (m1–m4) совпадают с id панелей в HTML.
 ═══════════════════════════════════════════════════════════════ */
 const MODULES = {
-  // ========================================
-  // ВВОДНЫЙ УРОК (БЕСПЛАТНЫЙ / ПРОБНЫЙ)
-  // Не входит в 16 основных — конверсионный инструмент
-  // ========================================
-  intro: [
-    {
-      num: '00',
-      title: '🎮 Твоя первая страница за 30 минут',
-      what: 'Бесплатный пробный урок — работаем в онлайн-редакторе, ничего не устанавливаем. Пишем настоящий HTML-код: заголовок, текст, картинка. Через 30 минут у тебя готовая страница которую можно открыть в браузере и показать друзьям.',
-      projects: [
-        { level: 'ВСЕ ДЕЛАЮТ', text: 'Страница «Привет, это я!» — заголовок с именем, картинка любимого персонажа, 3 факта о себе. Открываем в браузере — это реально работает!' }
-      ]
-    }
-  ],
 
-  // ========================================
-  // МОДУЛЬ 1: HTML — СКЕЛЕТ САЙТА
-  // ========================================
+  /* ── Модуль 1: HTML — скелет сайта ── */
   m1: [
     {
       num: '01',
@@ -1123,9 +1843,7 @@ const MODULES = {
     }
   ],
 
-  // ========================================
-  // МОДУЛЬ 2: CSS — СТИЛЬ И КРАСОТА
-  // ========================================
+  /* ── Модуль 2: CSS — стиль и красота ── */
   m2: [
     {
       num: '05',
@@ -1169,9 +1887,7 @@ const MODULES = {
     }
   ],
 
-  // ========================================
-  // МОДУЛЬ 3: РАСПОЛОЖЕНИЕ И ЭФФЕКТЫ
-  // ========================================
+  /* ── Модуль 3: расположение и эффекты ── */
   m3: [
     {
       num: '09',
@@ -1215,9 +1931,7 @@ const MODULES = {
     }
   ],
 
-  // ========================================
-  // МОДУЛЬ 4: ФИНАЛЬНЫЙ ПРОЕКТ
-  // ========================================
+  /* ── Модуль 4: финальный проект ── */
   m4: [
     {
       num: '13',
@@ -1261,28 +1975,38 @@ const MODULES = {
     }
   ]
 };
+
+
 /* ═══════════════════════════════════════════════════════════════
    РЕНДЕР КАРТОЧЕК УРОКОВ
+   Для каждого модуля заполняет соответствующий .lessons-grid
+   (id="lessons-m1", "lessons-m2" и т.д.) HTML-разметкой
 ═══════════════════════════════════════════════════════════════ */
 function renderLessons() {
   Object.entries(MODULES).forEach(([moduleId, lessons]) => {
     const container = document.getElementById('lessons-' + moduleId);
-    if (!container) return;
+    if (!container) return; /* панель модуля не найдена — пропускаем */
 
     container.innerHTML = lessons.map(lesson => `
       <div class="lesson-card">
         <div class="lesson-top">
+          <!-- Номер урока (01, 02 …) -->
           <div class="lesson-num">${lesson.num}</div>
           <div>
             <div class="lesson-title">${lesson.title}</div>
             <div class="lesson-what">${lesson.what}</div>
           </div>
         </div>
+
+        <!-- Кнопка раскрытия проектов -->
         <div class="projects-toggle" onclick="toggleProjects(this)">
           <span class="arr">▸</span> Проекты на выбор
         </div>
+
+        <!-- Список проектов (скрыт по умолчанию) -->
         <div class="projects-list">
           ${lesson.projects.map(p => {
+            /* CSS-класс зависит от уровня сложности */
             const cls = p.level === 'ЛЕГКО' ? 'proj-easy' : p.level === 'СРЕДНЕ' ? 'proj-medium' : 'proj-hard';
             return `<div class="project-item ${cls}"><span class="proj-badge">${p.level}</span><span class="proj-text">${p.text}</span></div>`;
           }).join('')}
@@ -1292,16 +2016,18 @@ function renderLessons() {
   });
 }
 
+/* Открывает / закрывает список проектов и поворачивает стрелку */
 function toggleProjects(btn) {
-  const list  = btn.nextElementSibling;
-  const arrow = btn.querySelector('.arr');
-  const isOpen = list.classList.toggle('open');
+  const list   = btn.nextElementSibling;          /* .projects-list */
+  const arrow  = btn.querySelector('.arr');        /* стрелка ▸ */
+  const isOpen = list.classList.toggle('open');    /* переключаем класс .open */
   arrow.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0)';
 }
 
 
 /* ═══════════════════════════════════════════════════════════════
    ПЕРЕКЛЮЧЕНИЕ ТАБОВ МОДУЛЕЙ
+   Убирает .active у всех табов и панелей, добавляет нужному
 ═══════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -1315,6 +2041,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 
 /* ═══════════════════════════════════════════════════════════════
    АККОРДЕОН FAQ
+   Клик по вопросу открывает ответ; повторный клик — закрывает
 ═══════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.faq-q').forEach(question => {
   question.addEventListener('click', () => {
@@ -1328,16 +2055,19 @@ document.querySelectorAll('.faq-q').forEach(question => {
 
 /* ═══════════════════════════════════════════════════════════════
    МОДАЛЬНОЕ ОКНО — открытие / закрытие
+   Привязано к кнопкам: navCta, heroCta, ctaCta
 ═══════════════════════════════════════════════════════════════ */
 const modal = document.getElementById('contactModal');
 
 function openModal()  { modal.classList.add('open'); }
 function closeModal() { modal.classList.remove('open'); }
 
+/* Открываем по клику на любую кнопку "Записаться" */
 ['navCta', 'heroCta', 'ctaCta'].forEach(id => {
   document.getElementById(id).addEventListener('click', e => { e.preventDefault(); openModal(); });
 });
 
+/* Закрываем по крестику, клику на оверлей или клавише Escape */
 document.getElementById('modalClose').addEventListener('click', closeModal);
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
