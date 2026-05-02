@@ -62,10 +62,21 @@ body {
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
-  font-size: 17.5px;            /* увеличенный базовый размер для читаемости */
-  line-height: 1.6;
+  font-size: 19px;              /* увеличенный базовый размер для читаемости */
+  line-height: 1.7;
+  font-weight: 400;
   transition: background .35s ease, color .35s ease;
 }
+
+/* ─── БУСТ ЧИТАЕМОСТИ: убираем слишком мелкие размеры и блёклую прозрачность ─── */
+p, li { line-height: 1.75; }
+[class*="desc"], [class*="text"], [class*="answer"], .faq-a, .lesson-what,
+.module-desc, .about-text, .modal-note { font-size: 1.05rem; line-height: 1.8; opacity: 1 !important; }
+[class*="title"]:not(.hero-title):not(.section-title) { font-size: 1.15rem; }
+.pill { font-size: .95rem; }
+.nav-links a { font-size: .95rem; }
+.nav-cta { font-size: .85rem; }
+.hero-btn { font-size: 1rem; }
 
 /* ─── ПЕРЕОПРЕДЕЛЕНИЯ ДЛЯ СВЕТЛОЙ ТЕМЫ ─── */
 [data-theme="light"] .space-bg {
@@ -393,11 +404,11 @@ nav {
 
 /* Описание курса */
 .hero-desc {
-  max-width: 720px;
-  font-size: 1rem;
+  max-width: 760px;
+  font-size: 1.15rem;
   line-height: 1.85;
   color: var(--text);
-  opacity: .72;
+  opacity: .92;
   margin: 0 auto 2.5rem;
 }
 
@@ -1683,7 +1694,8 @@ footer .logo {
     <div style="font-size:2rem;margin-bottom:.6rem;">✉️</div>
     <div class="modal-title">Напишите мне</div>
     <div class="modal-note">Первый урок бесплатно, пишите, мы все обсудим!
-      Отвечаю быстро! Пишите !</div>
+      Отвечаю быстро! Пишите !
+    </div>
     <div class="slinks">
       <a href="https://t.me/samadhi404" target="_blank" class="slink">
         <span class="slink-icon">✈️</span>
