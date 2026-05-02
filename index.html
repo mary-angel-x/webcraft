@@ -21,11 +21,28 @@
   --aurora:        #a855f7;             /* светло-фиолетовый */
   --gold:          #ffd700;             /* золотой */
   --green:         #39ff14;             /* неоновый зелёный */
-  --white:         #f0ecff;             /* основной белый текст */
-  --text:          #cbbfff;             /* текст второго уровня */
-  --muted:         #6b5fa0;             /* приглушённый текст */
+  --white:         #ffffff;             /* основной белый текст */
+  --text:          #ece6ff;             /* текст второго уровня — посветлее для читаемости */
+  --muted:         #9b8fd1;             /* приглушённый текст — чуть ярче */
   --glass-bg:      rgba(255,255,255,0.04);  /* полупрозрачный фон карточек */
   --glass-border:  rgba(255,255,255,0.09);  /* граница стекло-карточек */
+}
+
+/* ─── СВЕТЛАЯ ТЕМА — трендовая палитра 2025/26: лавандово-кремовый фон + насыщенные акценты ─── */
+[data-theme="light"] {
+  --cosmos:        #f6f3ff;             /* мягкий лавандово-кремовый фон */
+  --violet:        #6d28d9;             /* глубокий фиолетовый */
+  --cyan:          #0e7490;             /* приглушённый бирюзовый */
+  --teal:          #0d9488;             /* тёмная бирюза */
+  --pink:          #db2777;             /* коралловый розовый */
+  --aurora:        #7c3aed;             /* индиго */
+  --gold:          #c2890b;             /* охра */
+  --green:         #15803d;             /* лесной зелёный */
+  --white:         #1a0b3d;             /* "белый" → теперь тёмный текст */
+  --text:          #2d1b69;             /* основной тёмный текст */
+  --muted:         #6b5ca8;             /* приглушённый */
+  --glass-bg:      rgba(109,40,217,0.05);
+  --glass-border:  rgba(109,40,217,0.18);
 }
 
 /* Обнуление: все элементы считают размер вместе с border и padding */
@@ -45,6 +62,80 @@ body {
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
+  font-size: 17.5px;            /* увеличенный базовый размер для читаемости */
+  line-height: 1.6;
+  transition: background .35s ease, color .35s ease;
+}
+
+/* ─── ПЕРЕОПРЕДЕЛЕНИЯ ДЛЯ СВЕТЛОЙ ТЕМЫ ─── */
+[data-theme="light"] .space-bg {
+  background:
+    radial-gradient(ellipse 120% 80% at 20% -10%, rgba(168,85,247,.18) 0%, transparent 60%),
+    radial-gradient(ellipse  80% 60% at 80%  10%, rgba(14,116,144,.12) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 70% at 60%  90%, rgba(219,39,119,.14) 0%, transparent 55%),
+    radial-gradient(ellipse  90% 80% at  5%  70%, rgba(124,58,237,.12) 0%, transparent 60%),
+    linear-gradient(180deg, #f6f3ff 0%, #efe9ff 35%, #fce7f3 65%, #f6f3ff 100%);
+}
+[data-theme="light"] #starfield,
+[data-theme="light"] #fallingStars { display: none; }
+[data-theme="light"] .nebula { opacity: .25; filter: blur(110px); }
+[data-theme="light"] nav {
+  background: rgba(255,255,255,.65);
+  border-bottom: 1px solid rgba(109,40,217,.15);
+}
+[data-theme="light"] .nav-cta {
+  background: rgba(109,40,217,.08);
+  border-color: rgba(109,40,217,.4);
+  color: var(--violet);
+}
+[data-theme="light"] .nav-cta:hover {
+  background: rgba(109,40,217,.18);
+  border-color: rgba(109,40,217,.7);
+}
+[data-theme="light"] .hero-btn {
+  background: rgba(109,40,217,.1);
+  border-color: rgba(109,40,217,.5);
+  color: var(--violet);
+}
+[data-theme="light"] .hero-title {
+  background: linear-gradient(135deg, #2d1b69 0%, #0e7490 20%, #6d28d9 50%, #db2777 75%, #2d1b69 100%);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+[data-theme="light"] #contactModal { background: rgba(45,27,105,.45); }
+[data-theme="light"] .modal-box {
+  background: linear-gradient(135deg, #ffffff, #f6f3ff);
+  border: 1px solid rgba(109,40,217,.25);
+  box-shadow: 0 20px 60px rgba(109,40,217,.18);
+}
+[data-theme="light"] .pill,
+[data-theme="light"] .slink {
+  background: rgba(255,255,255,.7);
+  border-color: rgba(109,40,217,.18);
+}
+
+/* Кнопка переключателя темы */
+.theme-toggle {
+  background: rgba(139,47,255,.08);
+  border: 1px solid rgba(139,47,255,.35);
+  border-radius: 100px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--white);
+  margin-right: .8rem;
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.theme-toggle:hover { background: rgba(139,47,255,.18); transform: rotate(20deg); }
+[data-theme="light"] .theme-toggle {
+  background: rgba(109,40,217,.08);
+  border-color: rgba(109,40,217,.35);
+  color: var(--violet);
 }
 
 
@@ -1349,7 +1440,10 @@ footer .logo {
     <a href="#results">Результаты</a>
     <a href="#faq">FAQ</a>
   </div>
-  <a href="#" class="nav-cta" id="navCta">Записаться</a>
+  <div style="display:flex;align-items:center;">
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Переключить тему">🌙</button>
+    <a href="#" class="nav-cta" id="navCta">Записаться</a>
+  </div>
 </nav>
 
 <!-- ══════════ HERO — первый экран ══════════ -->
@@ -2075,6 +2169,29 @@ function closeModal() { modal.classList.remove('open'); }
 document.getElementById('modalClose').addEventListener('click', closeModal);
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ — сохраняет выбор в localStorage
+═══════════════════════════════════════════════════════════════ */
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('webcraft-theme') || 'dark';
+function applyTheme(t) {
+  if (t === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    themeToggle.textContent = '☀️';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    themeToggle.textContent = '🌙';
+  }
+}
+applyTheme(savedTheme);
+themeToggle.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  const next = current === 'light' ? 'dark' : 'light';
+  applyTheme(next);
+  localStorage.setItem('webcraft-theme', next);
+});
 
 
 /* ═══════════════════════════════════════════════════════════════
